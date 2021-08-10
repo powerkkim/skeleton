@@ -25,4 +25,6 @@ public class MyDataSourceConfig {
     public HikariDataSource hikariDataSource(DataSourceProperties properties) {
         return properties.initializeDataSourceBuilder().type(HikariDataSource.class).build();
     }
+
+
 }

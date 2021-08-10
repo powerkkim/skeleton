@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
 
-@Configuration
-@MapperScan(basePackages = "com.powernote.skeleton")
+//@Configuration
+//@MapperScan(basePackages = "com.powernote.skeleton")
 public class MyBatisConfig {
     private final ApplicationContext appCtx;
 
@@ -23,7 +23,7 @@ public class MyBatisConfig {
     public SqlSessionFactory sqlSessionFactory(DataSource hikariDataSource) throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(hikariDataSource);
-        sqlSessionFactoryBean.setMapperLocations( appCtx.getResources("classpath:/mapper/*.xml") );
+//        sqlSessionFactoryBean.setMapperLocations( appCtx.getResources("classpath:/mapper/*.xml") );
         return sqlSessionFactoryBean.getObject();
     }
 

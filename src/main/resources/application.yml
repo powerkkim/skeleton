@@ -12,4 +12,5 @@ spring:
       maximum-pool-size: 20
 
 mybatis:
-  type-aliases-package: com.powernote.skeleton.mapper  #
+  type-aliases-package: com.powernote.skeleton.mapper  # model 객체
+  mapper-locations: classpath:mapper/**/*.xml
