@@ -3,7 +3,7 @@
 
 <mapper namespace="com.powernote.skeleton.mapper.TestMapper">
     <select id="selectTest" resultType="string">
-        SELECT now()
+        SELECT 'HelloTest'
         FROM dual
     </select>
 </mapper>

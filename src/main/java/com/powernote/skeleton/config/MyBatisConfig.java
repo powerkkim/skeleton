@@ -7,27 +7,24 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import javax.sql.DataSource;
 
 @Configuration
-@MapperScan(basePackages = "com.powernote.skeleton")
+@MapperScan(basePackages = "com.powernote.skeleton.mapper", sqlSessionTemplateRef = "mySqlSessionTemplate")
 public class MyBatisConfig {
-    private final ApplicationContext appCtx;
 
-    public MyBatisConfig(ApplicationContext appCtx) {
-        this.appCtx = appCtx;
-    }
-
-    @Bean
+    @Bean(name="mysqlSessionFactory")
     public SqlSessionFactory sqlSessionFactory(DataSource hikariDataSource) throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(hikariDataSource);
-        sqlSessionFactoryBean.setMapperLocations( appCtx.getResources("classpath:/mapper/*.xml") );
+        sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:/mapper/*.xml"));
+
         return sqlSessionFactoryBean.getObject();
     }
 
-    @Bean
+    @Bean(name = "mySqlSessionTemplate")
     public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) {
         return new SqlSessionTemplate(sqlSessionFactory);
     }

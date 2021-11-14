@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:oracle:thin:@ATPDBNAME_high?TNS_ADMIN=/oracle/oracle_atp/Wallet_ATPDBNAME/
+    username: ADMIN
+    password: xxxxxx
+    driver-class-name: oracle.jdbc.OracleDriver
+    hikari:
+      connection-timeout: 3000
+      validation-timeout: 3000
+      minimum-idle: 5
+      max-lifetime: 240000
+      maximum-pool-size: 20
+      pool-name: oraPool
+
+mybatis:
+  type-aliases-package: com.powernote.skeleton.mapper  #
+
