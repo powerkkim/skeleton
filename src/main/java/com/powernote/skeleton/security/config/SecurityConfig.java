@@ -2,7 +2,6 @@ package com.powernote.skeleton.security.config;
 
 import com.powernote.skeleton.security.handler.CustomLoginFailureHandler;
 import com.powernote.skeleton.security.handler.CustomLoginSuccessHandler;
-import com.powernote.skeleton.security.handler._CustomAuthenticationEntryPoint;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -76,14 +75,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .logout()             // 로그아웃시 어떻게 처리 할것이냐.
                 .logoutSuccessUrl("/login").permitAll()   // logout 이 되고 나서 가는 페이지 설정.
                 .invalidateHttpSession(true)  // session 정보를 지우고 무효화.
-                .and()
-            .exceptionHandling()  // Exception Handle 의 경우  필요한경우에만 설정
+//                .and()
+//            .exceptionHandling()  // Exception Handle 의 경우  필요한경우에만 설정
 //                // 로그인은 됐으나 Role 접근이 안되는 경우. '권한 없음 페이지. 403 Status 처리.'
 //                .accessDeniedHandler(new CustomAccessDeniedHandler())
 //                // 비로그인 상태. 인증 하지 않은 상황에서 호출됨으로 401.html 페이지 호출 이후  로그인 할수 있는 페이지 이동 가이드가 필요함.
 
 //                // authenticationEntryPoint를 설정시 로그인 페이지를 호출하지 않을 수 있다.
-                .authenticationEntryPoint(new _CustomAuthenticationEntryPoint())
+//                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
             ;
     }
 }
