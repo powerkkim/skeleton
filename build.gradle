@@ -28,7 +28,14 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java'
 
     // oracle cloud
-    implementation("com.oracle.database.jdbc:ojdbc8-production:21.1.0.0")
+    // Get BOM file and choose Oracle JDBC driver (ojdbc8.jar) and Universal Connection Pool (ucp.jar)
+    implementation(enforcedPlatform("com.oracle.database.jdbc:ojdbc-bom:21.1.0.0"))
+    implementation("com.oracle.database.jdbc:ojdbc8")
+    implementation("com.oracle.database.jdbc:ucp")
+    // Additional Jars for using Oracle Wallets
+    implementation("com.oracle.database.security:oraclepki")
+    implementation("com.oracle.database.security:osdt_core")
+    implementation("com.oracle.database.security:osdt_cert")
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
