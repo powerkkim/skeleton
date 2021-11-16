@@ -37,6 +37,11 @@ dependencies {
     implementation("com.oracle.database.security:osdt_core")
     implementation("com.oracle.database.security:osdt_cert")
 
+    // [[ thymeleaf
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    // layout with thymeleaf
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
