@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>This Page 403 Error </h1><br>
+
+<h1 th:inline="text">로그인 ID : [[${#httpServletRequest.remoteUser}]]!</h1>
+접근 권한이 없습니다. <br>
+메시지 :
+<span th:text="${errMsg}"> </span>
+
+
+<div class="errorPage"><span class="errorHead">Error!</span><br/>
+    <p th:text="${'path: ' + path}"></p>
+    <p th:text="${'status: ' + status}"></p>
+    <p th:text="${'timestamp: ' + timestamp}"></p>
+    <p th:text="${'error: ' + error}"></p>
+    <p th:text="${'errorCode: ' + errorCode}"></p>
+    <p th:text="${'message: ' + message}"></p>
+</body>
+
+</html>

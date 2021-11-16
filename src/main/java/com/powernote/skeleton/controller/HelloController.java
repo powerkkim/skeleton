@@ -3,12 +3,12 @@ package com.powernote.skeleton.controller;
 import com.powernote.skeleton.mapper.TestMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@RequestMapping("/api")
+@Controller
 @Slf4j
 public class HelloController {
 
@@ -16,11 +16,11 @@ public class HelloController {
     TestMapper testMapper;
 
 
-    @GetMapping("/")
+    @GetMapping("/hello")
     public String Hello(){
 
         String st = testMapper.selectTest();
         System.out.println("$$$$$$$$$$$$" + st);
-        return "Hello";
+        return "pages/hello";
     }
 }

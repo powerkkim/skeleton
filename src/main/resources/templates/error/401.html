@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>This Page 401 Error </h1><br>
+
+접근 권한이 없습니다. <br>
+메시지 :  로그인이 필요 합니다.
+<a href="/login"> 로그인 </a>
+
+<div class="errorPage"><span class="errorHead">Error!</span><br/>
+    <p th:text="${'path: ' + path}"></p>
+    <p th:text="${'status: ' + status}"></p>
+    <p th:text="${'timestamp: ' + timestamp}"></p>
+    <p th:text="${'error: ' + error}"></p>
+    <p th:text="${'errorCode: ' + errorCode}"></p>
+    <p th:text="${'message: ' + message}"></p>
+</body>
+
+</html>
