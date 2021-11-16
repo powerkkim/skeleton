@@ -11,5 +11,32 @@ spring:
       max-lifetime: 240000
       maximum-pool-size: 20
 
+
+  # static/index.html 의 경로가 http://localhost:8080/static/index.html 의 경로로 처리 되도록 함.
+  # 기본은 http://localhost:8080/index.html root 로 설정되어 있음
+  mvc:
+    static-path-pattern: /static/**  # 기본값 /**
+
+  # 테스트 용도 classpath:/META-INF/resources/ -> file path 적용은 빌드 결과물을 사용하는것이 아니라 UI 변경 수정시 확인 용이 하도록 하기 위함.
+  # For Test [[
+  web:
+    resources:
+      static-locations:
+        #        - classpath:/META-INF/resources/
+        #        - classpath:/resources/
+        #        - classpath:/static/
+        #        - classpath:/public/
+        - file:src/main/resources/static/
+        - file:src/main/resources/
+        - file:src/main/public/
+      add-mappings: true
+
+  thymeleaf:
+    #    prefix: classpath:/templates/
+    prefix: file:src/main/resources/templates/
+    cache: false
+#  ]]
+
 mybatis:
   type-aliases-package: com.powernote.skeleton.mapper  #
+
