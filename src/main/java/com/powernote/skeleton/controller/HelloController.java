@@ -21,8 +21,6 @@ public class HelloController {
 
         String st = testMapper.selectTest();
         System.out.println("$$$$$$$$$$$$" + st);
-
-
         return "Hello";
     }
 }
