@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head th:replace="fragments/login/fragment_config :: f_config"></head>
+<th:block layout:fragment="localcss">
+</th:block>
+
+<body class="hold-transition login-page">
+<div layout:fragment="content"></div>
+
+<th:block th:replace="fragments/common/fragment_jsimport :: f_jsimport"></th:block>
+<th:block layout:fragment="localjs">
+</th:block>
+<script layout:fragment="jsscript"></script>
+</body>
+
+</body>
+</html>

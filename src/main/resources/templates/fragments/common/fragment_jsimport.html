@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="f_jsimport">
+
+<!--    <script asyn src="/plugins/fontawesome-free-5.15.1-web/js/all.min.js"></script>-->
+    <!-- jQuery -->
+    <script asyn th:src="@{/vendor/jquery/jquery.min.js}"></script>
+
+    <!-- Bootstrap 4 -->
+    <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+    <!-- AdminLTE App -->
+    <script th:src="@{/vendor/AdminLTE/js/adminlte.min.js}"></script>
+    <script th:src="@{/js/common.js}"></script>
+</th:block>
+</html>
