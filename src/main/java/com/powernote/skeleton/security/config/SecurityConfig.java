@@ -1,5 +1,7 @@
 package com.powernote.skeleton.security.config;
 
+import com.powernote.skeleton.security.handler.CustomAccessDeniedHandler;
+import com.powernote.skeleton.security.handler.CustomAuthenticationEntryPoint;
 import com.powernote.skeleton.security.handler.CustomLoginFailureHandler;
 import com.powernote.skeleton.security.handler.CustomLoginSuccessHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -41,8 +43,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("aaaa@gmail.com")
                 .password(passwordEncoder().encode("aaaa1234")).roles("USER")
                 .and()
-                .withUser("superuser")
-                .password(passwordEncoder().encode("superuser"))
+                .withUser("bhkim@zinnaworks.com")
+                .password(passwordEncoder().encode("1234"))
                 .roles("USER").roles("ADMIN");
     }
 
@@ -80,7 +82,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                // 로그인은 됐으나 Role 접근이 안되는 경우. '권한 없음 페이지. 403 Status 처리.'
 //                .accessDeniedHandler(new CustomAccessDeniedHandler())
 //                // 비로그인 상태. 인증 하지 않은 상황에서 호출됨으로 401.html 페이지 호출 이후  로그인 할수 있는 페이지 이동 가이드가 필요함.
-
 //                // authenticationEntryPoint를 설정시 로그인 페이지를 호출하지 않을 수 있다.
 //                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
             ;
