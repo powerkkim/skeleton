@@ -102,7 +102,7 @@ public class ApiExceptionHandler {
 //        ResponseDto message = new ResponseDto(MessageType.ERROR_PAGE_400, response);
 //        return  new ResponseEntity<>(message, CommonUtil.getHeader(), HttpStatus.BAD_REQUEST);
 
-        return  new ResponseEntity<>(response, CommonUtil.getHeader(), HttpStatus.BAD_REQUEST);
+        return  new ResponseEntity<>(response, CommonUtil.getHeader(), e.getHttpStatus() );
     }
 
     // Service - layer error
