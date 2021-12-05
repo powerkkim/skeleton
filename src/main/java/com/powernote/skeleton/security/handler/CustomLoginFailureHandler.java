@@ -45,7 +45,7 @@ public class CustomLoginFailureHandler extends SimpleUrlAuthenticationFailureHan
 
         request.setAttribute("errMsg", errMsg);
 
-        request.getRequestDispatcher(defaultUrl).forward(request, response);
+        response.sendRedirect( defaultUrl );
     }
 
 

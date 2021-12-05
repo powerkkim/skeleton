@@ -3,11 +3,9 @@ package com.powernote.skeleton.dto;
 import com.powernote.skeleton.exception.error.MessageType;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
 public class ResponseDto<T> {
 
     private String result = "0000";  // result code
