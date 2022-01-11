@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout_common}"
+>
+
+<body>
+
+<div class="content-wrapper" layout:fragment="content">
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>게시판</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Simple Tables</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+
+      <!--ROLE_USER 권한을 갖는다면 이 글이 보임-->
+      <div sec:authorize="hasRole('ADMIN')">Has admin Role</div>
+      <br>
+
+      <!--ROLE_ADMIN 권한을 갖는다면 이 글이 보임-->
+      <div sec:authorize="hasRole('USER')">Has user Role</div>
+      <br>
+
+      <!--어떤 권한이건 상관없이 인증이 되었다면 이 글이 보임-->
+      <div sec:authorize="isAuthenticated()">
+        Only Authenticated user can see this Text
+      </div>
+      <br>
+
+      <!--인증시 사용된 객체에 대한 정보-->
+      <b>Authenticated DTO:</b>
+      <div sec:authentication="principal"></div>
+      <br>
+
+      <!--인증시 사용된 객체의 Username (ID)-->
+      <b>Authenticated username:</b>
+      <div sec:authentication="name"></div>
+      <br>
+
+      <!--객체의 권한-->
+      <b>Authenticated user role:</b>
+      <div sec:authentication="principal.authorities"></div>
+
+
+      <!--인증시 사용된 객체의 Username (ID)-->
+      <b>Authenticated username:</b>
+      <div sec:authentication="principal.username"></div>
+      <br>
+      <!--인증시 사용된 객체의 Username (ID)-->
+      <b>Authenticated email:</b>
+      <div sec:authentication="principal.email"></div>
+      <br>
+      <!--인증시 사용된 객체의 Username (ID)-->
+      <b>Authenticated userNo:</b>
+      <div sec:authentication="principal.userNo"></div>
+      <br>
+
+      <!--인증시 사용된 객체의 Username (ID)-->
+      <b>Authenticated nickname:</b>
+      <div sec:authentication="principal.nickname"></div>
+      <br>
+
+    </div><!-- /.container-fluid -->
+  </section>
+
+</div>
+</body>
+
+
+</html>

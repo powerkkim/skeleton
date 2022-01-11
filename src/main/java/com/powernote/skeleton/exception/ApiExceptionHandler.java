@@ -9,6 +9,7 @@ import com.powernote.skeleton.exception.error.ErrorRes;
 import com.powernote.skeleton.exception.error.MessageType;
 import com.powernote.skeleton.util.CommonUtil;
 import com.powernote.skeleton.util.MessageUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 //@ControllerAdvice(annotations = RestController.class)
+@Slf4j
 @RestControllerAdvice(annotations = RestController.class)
 public class ApiExceptionHandler {
 
@@ -46,7 +48,8 @@ public class ApiExceptionHandler {
 
 //        ResponseDto message = new ResponseDto(MessageType.ERROR_TYPE_000, response);
 //        return  new ResponseEntity<>(message, CommonUtil.getHeader(), HttpStatus.INTERNAL_SERVER_ERROR);
-
+        log.info("exception");
+        e.printStackTrace();
         return  new ResponseEntity<>(response, CommonUtil.getHeader(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -77,6 +80,8 @@ public class ApiExceptionHandler {
 
 //        ResponseDto message = new ResponseDto(MessageType.ERROR_PAGE_400, response);
 //        return  new ResponseEntity<>(message, CommonUtil.getHeader(), HttpStatus.BAD_REQUEST);
+        log.info("processValidationError");
+        e.printStackTrace();
         return  new ResponseEntity<>(response, CommonUtil.getHeader(), HttpStatus.BAD_REQUEST);
     }
 
@@ -99,6 +104,8 @@ public class ApiExceptionHandler {
 
 //        ResponseDto message = new ResponseDto(MessageType.ERROR_PAGE_400, response);
 //        return  new ResponseEntity<>(message, CommonUtil.getHeader(), HttpStatus.BAD_REQUEST);
+        log.info("clientException");
+        e.printStackTrace();
 
         return  new ResponseEntity<>(response, CommonUtil.getHeader(), e.getHttpStatus() );
     }
@@ -121,6 +128,8 @@ public class ApiExceptionHandler {
 
 //        ResponseDto message = new ResponseDto(MessageType.ERROR_PAGE_400, response);
 //        return  new ResponseEntity<>(message, CommonUtil.getHeader(), e.getHttpStatus());
+        log.info("businessException");
+        e.printStackTrace();
 
         return  new ResponseEntity<>(response, CommonUtil.getHeader(), e.getHttpStatus());
     }
@@ -142,7 +151,8 @@ public class ApiExceptionHandler {
 
 //        ResponseDto message = new ResponseDto(MessageType.ERROR_PAGE_500, response);
 //        return  new ResponseEntity<>(message, CommonUtil.getHeader(), HttpStatus.INTERNAL_SERVER_ERROR);
-
+        log.info("systemException");
+        e.printStackTrace();
         return  new ResponseEntity<>(response, CommonUtil.getHeader(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -155,8 +165,9 @@ public class ApiExceptionHandler {
 //        String logMsg = StringUtils.isEmpty(e.getMessagecode()) ? "" : MessageUtil.getMessage(e.getMessagecode());
 //        LogUtils.tExlog( request , "[ BaseException , " + String.valueOf( HttpStatus.OK.value() ) + logMsg + "]");
 
+        log.info("handleBaseException");
+        e.printStackTrace();
         return new ResponseEntity(rDto, HttpStatus.OK);
-
     }
 
 

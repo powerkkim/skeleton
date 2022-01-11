@@ -9,6 +9,8 @@ public enum MessageType {
     , ERROR_TYPE_001( "파라미터가 유효하지 않습니다.")
     , ERROR_TYPE_002( "강제에러 발생 .")
 
+    , ERROR_LOGIN_001( "로그인 정보가 올바르지 않습니다.")
+
 
     , ERROR_PAGE_400( "400 잘못된 요청입니다." )
     , ERROR_PAGE_403( "403 접근 권한이 없습니다.")

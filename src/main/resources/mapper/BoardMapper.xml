@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+
+<mapper namespace="com.powernote.skeleton.mapper.BoardMapper">
+    <insert id="save" parameterType="com.powernote.skeleton.vo.PostDataVo">
+        insert into TB_BOARD ( BOARD_NO ,  TITLE ,  CONTENT ,  WRITER,  USER_NO, REG_DATE ,  UPT_DATE ) values (
+            TB_BOARD_SEQ.NEXTVAL,
+            #{title},
+            #{content},
+            #{writer},
+            #{userNo},
+            SYSDATE,
+            SYSDATE
+        )
+    </insert>
+
+    <select id="findAll" resultType="com.powernote.skeleton.vo.PostDataVo">
+        select * from TB_BOARD
+    </select>
+
+    <select id="findAllCount" resultType="int">
+        select count(*) from TB_BOARD
+    </select>
+
+    <select id="findByWord" parameterType="HashMap" resultType="com.powernote.skeleton.vo.PostDataVo">
+<!--        oracle 12 이후 -->
+        SELECT *
+        FROM TB_BOARD
+        <where>
+<!--            <if test="title != null">title like  ('%'||#{title}||'%')</if>-->
+<!--            <if test="content != null">AND content like ('%'||#{content}||'%')</if>-->
+            <if test="title_content != null">AND (title like ('%'||#{title_content}||'%') or content like ('%'||#{title_content}||'%'))</if>
+        </where>
+        ORDER BY BOARD_NO desc
+        OFFSET #{offset} ROWS FETCH NEXT #{pageSize} ROWS ONLY
+
+<!--        select * from TB_BOARD-->
+<!--        <where>-->
+<!--            <if test="title != null">title = #{title}</if>-->
+<!--            <if test="content != null">AND title like #{content}</if>-->
+<!--        </where>-->
+<!--        order by board_no desc-->
+<!--        limit #{pageSize}-->
+<!--        offset #{offset}-->
+    </select>
+
+    <select id="findByWordCount" resultType="Integer">
+        SELECT count(*) from (
+            SELECT *
+            FROM TB_BOARD
+            <where>
+                <!--            <if test="title != null">title like  ('%'||#{title}||'%')</if>-->
+                <!--            <if test="content != null">AND content like ('%'||#{content}||'%')</if>-->
+                <if test="title_content != null">AND (title like ('%'||#{title_content}||'%') or content like ('%'||#{title_content}||'%'))</if>
+            </where>
+        )
+    </select>
+
+    <update id="update" parameterType="com.powernote.skeleton.vo.PostDataVo">
+        select * from TB_BOARD
+    </update>
+
+    <update id="delete" parameterType="com.powernote.skeleton.vo.PostDataVo">
+        select * from TB_BOARD
+    </update>
+</mapper>

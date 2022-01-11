@@ -1,1 +1,13 @@
 @charset "utf-8";
+
+.pp-table-fiexd {
+    table-layout: fixed;
+}
+
+.pp-ellipsis {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;  /* 말줄임 적용 in-line속성에서는 적용되지 않음. */
+    display: block;
+}

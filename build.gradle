@@ -16,6 +16,10 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+//     logback logging 제거
+    all {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
 }
 
 dependencies {
@@ -28,6 +32,9 @@ dependencies {
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'
     // MySql
     runtimeOnly 'mysql:mysql-connector-java'
+    // log4j2 적용
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+
     // oracle cloud
     // Get BOM file and choose Oracle JDBC driver (ojdbc8.jar) and Universal Connection Pool (ucp.jar)
     implementation(enforcedPlatform("com.oracle.database.jdbc:ojdbc-bom:21.1.0.0"))
@@ -43,15 +50,13 @@ dependencies {
     // layout with thymeleaf
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
     // http://www.thymeleaf.org/extras/spring-security html code에서 sec 관련 태그 사용 가능.
-//    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-
 }
 
 test {

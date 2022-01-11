@@ -2,30 +2,76 @@ package com.powernote.skeleton.security.service;
 
 //import com.workspringboot.demo06security.entity.Account;
 //import com.workspringboot.demo06security.repository.UserRepository;
+import com.powernote.skeleton.mapper.UserMapper;
+import com.powernote.skeleton.security.vo.CustomUserDetails;
+import com.powernote.skeleton.vo.UserVo;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
+import java.util.*;
+
+@Slf4j
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
+    @Autowired
+    UserMapper userMapper;
 
-//    private final UserRepository userRepository;
+//    public enum UserRoles {ROLE_USER, ROLE_ADMIN, ROLE_MASTER}
 //
-//    UserDetailsServiceImpl(UserRepository userRepository ) {
-//        this.userRepository = userRepository;
-//    }
+//    public static final SimpleGrantedAuthority ROLE_ADMIN_AUTH = new SimpleGrantedAuthority(UserRoles.ROLE_ADMIN.toString());
+//    public static final SimpleGrantedAuthority ROLE_ANONYMOUS_AUTH = new SimpleGrantedAuthority("ROLE_ANONYMOUS");
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        Account user = userRepository.findById(username);
-//        UserDetails userDetail = User.builder().username(user.getUserName())
-//                .password( user.getPassWord() )
-//                .roles( user.getRoles() )
-//                .build();
-//
-//        return userDetail;
-        return User.builder().build();
+    public CustomUserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+
+        UserVo user = userMapper.findById(userId);
+
+        CustomUserDetails userDetails = Optional.ofNullable(user)
+                .map((data)->{
+                    log.info( "User 정보 :{}" , user.toString() );
+
+                    CustomUserDetails detail = new CustomUserDetails(
+                            user.getEmail(),
+                            user.getUserName(),
+                            user.getPasswd(),
+                            user.getUserNo(),
+                            user.getNickName(),
+                            getAuthorities(user.getRoles()),
+                            true,true,true,true );
+                    return detail;
+                })
+                .orElseGet(()-> {
+                    log.info("Login 정보 오류 ");
+                    throw new UsernameNotFoundException("UserNotFound");
+                });
+
+        return userDetails;
     }
+
+    public static Collection<? extends GrantedAuthority> getAuthorities(String roles) {
+        List<GrantedAuthority> authList = getGrantedAuthorities(getRoles(roles));
+        return authList;
+    }
+
+    public static List<String> getRoles(String roles) {
+        return new ArrayList<String>(Arrays.asList(roles.split(",")));
+    }
+
+    public static List<GrantedAuthority> getGrantedAuthorities(List<String> roles) {
+        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        for (String role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role));
+        }
+        return authorities;
+    }
+
 }

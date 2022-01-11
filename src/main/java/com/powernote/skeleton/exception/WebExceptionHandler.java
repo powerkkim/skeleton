@@ -40,6 +40,9 @@ public class WebExceptionHandler {
         model.addAttribute( "exception", Exception.class.getName() );
 
         log.info( "[ Exception, " + String.valueOf( HttpStatus.INTERNAL_SERVER_ERROR.value() ) +   MessageUtil.getMessage( defaultError ) + "]");
+
+        log.info("pageHandlerException");
+        e.printStackTrace();
         return new ModelAndView("/error/error");
     }
 

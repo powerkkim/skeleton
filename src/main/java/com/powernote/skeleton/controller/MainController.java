@@ -12,8 +12,5 @@ public class MainController {
         return "pages/main";
     }
 
-    @GetMapping("/login")
-    public String login() {
-        return "pages/login";
-    }
+
 }

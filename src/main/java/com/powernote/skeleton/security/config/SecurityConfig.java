@@ -1,5 +1,6 @@
 package com.powernote.skeleton.security.config;
 
+import com.powernote.skeleton.security.UserRoleE;
 import com.powernote.skeleton.security.handler.CustomAccessDeniedHandler;
 import com.powernote.skeleton.security.handler.CustomAuthenticationEntryPoint;
 import com.powernote.skeleton.security.handler.CustomLoginFailureHandler;
@@ -36,23 +37,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * @param auth
      * @throws Exception
      */
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("aaaa@gmail.com")
-                .password(passwordEncoder().encode("aaaa1234")).roles("USER")
-                .and()
-                .withUser("bhkim@zinnaworks.com")
-                .password(passwordEncoder().encode("1234"))
-                .roles("USER").roles("ADMIN");
-    }
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.inMemoryAuthentication()
+//                .withUser("aaaa@gmail.com")
+//                .password(passwordEncoder().encode("aaaa1234")).roles("USER")
+//                .and()
+//                .withUser("bhkim@zinnaworks.com")
+//                .password(passwordEncoder().encode("1234"))
+//                .roles("USER").roles("ADMIN");
+//    }
 
     @Override // ignore check swagger resource 해당 url은 시큐리티 처리 안함.
     public void configure(WebSecurity web)  throws Exception  {
         //        super.configure(web);
 //        web.ignoring().antMatchers("/swagger-ui/**","/swagger-resources/**","/v2/api-docs/**", "/sample/**");
-        web.ignoring().antMatchers("/", "/login", "/index","/vendor/**", "/css/**", "/images/**", "/js/**", "/error/**" );
+        web.ignoring().antMatchers("/", "/index","/vendor/**", "/css/**", "/images/**", "/js/**", "/error/**" );
+        web.ignoring().antMatchers(  "/user/regist", "/user/user_post_regist" );
     }
 
     @Override
@@ -63,16 +64,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .csrf().disable()
             .authorizeRequests()  // 요청을 어떻게 보안을 걸것이냐에 대한 설정.
                 .antMatchers("/", "/main","/regist").permitAll()
-                .antMatchers("/hello").hasRole("MASTER")
-                .anyRequest().authenticated() // 이외에는 인증이 필요하다.
+                .antMatchers("/hello").hasRole( UserRoleE.ROLE_USER.getRole() )
+//                .anyRequest().authenticated() // 이외에는 인증이 필요하다.
                 .and()
             .formLogin()          // 로그인 페이지 관련. 이항목이 없다면 403 페이지 오류가 발생.
-                .loginPage("/login").permitAll()  // 사용자 페이지 구성을 위해서는 해당 항목을 설정.
+                .loginPage("/user/login").permitAll()  // 사용자 페이지 구성을 위해서는 해당 항목을 설정.
                 .loginProcessingUrl("/j_spring_security_check").permitAll()
                 .usernameParameter("userid")
                 .passwordParameter("password")
                 .successHandler( new CustomLoginSuccessHandler("/main") )
-                .failureHandler( new CustomLoginFailureHandler("/login") )
+                .failureHandler( new CustomLoginFailureHandler("/user/login") )
                 .and()
             .logout()             // 로그아웃시 어떻게 처리 할것이냐.
                 .logoutSuccessUrl("/login").permitAll()   // logout 이 되고 나서 가는 페이지 설정.

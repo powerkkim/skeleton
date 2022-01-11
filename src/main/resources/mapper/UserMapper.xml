@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+
+<mapper namespace="com.powernote.skeleton.mapper.UserMapper">
+    <insert id="insertUser" parameterType="com.powernote.skeleton.vo.UserVo">
+        insert into TB_USER ( USER_NO ,  EMAIL ,  PASSWD ,  USER_NAME,  NICK_NAME ,  TEL_NUMBER ,  ROLES ,  REG_DATE ,  UPT_DATE ,  PASSWDRESET_DATE ) values (
+            TB_USER_SEQ.NEXTVAL,
+            #{email},
+            #{passwd},
+            #{userName},
+            #{nickName},
+            #{telNumber},
+            #{roles},
+            SYSDATE,
+            SYSDATE,
+            SYSDATE
+        )
+    </insert>
+
+    <select id="findById" parameterType="String" resultType="com.powernote.skeleton.vo.UserVo">
+        select * from TB_USER
+        where EMAIL = #{email}
+    </select>
+
+</mapper>

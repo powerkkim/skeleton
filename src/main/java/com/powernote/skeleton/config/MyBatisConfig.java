@@ -20,6 +20,8 @@ public class MyBatisConfig {
     public SqlSessionFactory sqlSessionFactory(@Qualifier("myDataSource") DataSource hikariDataSource) throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(hikariDataSource);
+        // jdbcTypeForNull 문제 해결. oracle null 데이터 입력시 문제.
+        sqlSessionFactoryBean.setConfigLocation(new PathMatchingResourcePatternResolver().getResource("classpath:/config/mybatis-config.xml") );
         sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:/mapper/*.xml"));
 
         return sqlSessionFactoryBean.getObject();

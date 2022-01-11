@@ -14,7 +14,8 @@
     <div class="card-body login-card-body">
       <p class="login-box-msg">Sign in to start your session</p>
 
-      <form id="loginForm" method="post" th:action="@{/j_spring_security_check}" action="login_proc.html">
+<!--      <form id="loginForm" method="post" th:action="@{/j_spring_security_check}" action="login_proc.html">-->
+      <form id="loginForm">
         <div class="input-group mb-3">
           <input type="email" class="form-control" placeholder="Email"  name="userid">
           <div class="input-group-append">
@@ -24,7 +25,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password"  name="password">
+          <input type="password" class="form-control" placeholder="Password"  name="passwd">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -42,7 +43,8 @@
           </div>
           <!-- /.col -->
           <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+<!--            <button type="submit" class="btn btn-primary btn-block">Sign In</button>-->
+            <button type="button" onclick="logIn()" class="btn btn-primary btn-block">Sign In</button>
           </div>
           <!-- /.col -->
         </div>
@@ -68,8 +70,48 @@
     </div>
     <!-- /.login-card-body -->
   </div>
+<!--  <div th:text="${#httpServletRequest.getParameter('errMsg')}">message here</div>-->
 </div>
 <!-- /.login-box -->
+
+<script layout:fragment="jsscript" th:inline="javascript">
+  $(document).ready(function(){
+    console.log("page loaded");
+  });
+
+  function logIn () {
+    var UserVo = {
+        userid: $("input[name='userid']").val(),
+        password: $("input[name='passwd']").val(),
+    };
+
+    $.ajax({
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader("isAjaxLogin","true");
+      },
+      url: /*[[@{/j_spring_security_check}]]*/ '/j_spring_security_check',
+      type: 'POST',
+      data: UserVo,
+      dataType: 'json',
+      success: function onData (data) {
+        console.log(data);
+        if (data.result == "OK") {
+          alert("로그인 성공 하였습니다.");
+          window.location = /*[[@{/main}]]*/ '/main';
+        }
+        else {
+          alert("로그인 정보가 올바르지 않습니다.");
+        }
+      },
+      error: function onError (error) {
+        console.log(error.responseJSON);
+        alert("오류가 발생하였습니다. ");
+      }
+    });
+
+  }
+</script>
+
 
 </body>
 </html>
