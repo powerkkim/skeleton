@@ -56,8 +56,18 @@
         )
     </select>
 
+    <select id="findByPostId" parameterType="String" resultType="com.powernote.skeleton.vo.PostDataVo">
+        SELECT *
+        FROM TB_BOARD
+        where BOARD_NO = #{boardNo}
+    </select>
+
     <update id="update" parameterType="com.powernote.skeleton.vo.PostDataVo">
-        select * from TB_BOARD
+        update TB_BOARD
+        set TITLE = #{title},
+            CONTENT = #{content},
+            UPT_DATE = SYSDATE
+        where BOARD_NO = #{boardNo}
     </update>
 
     <update id="delete" parameterType="com.powernote.skeleton.vo.PostDataVo">

@@ -3,7 +3,7 @@ package com.powernote.skeleton.controller.api;
 import com.powernote.skeleton.dto.PageInfoDto;
 import com.powernote.skeleton.dto.ResponseDto;
 import com.powernote.skeleton.exception.error.MessageType;
-import com.powernote.skeleton.service.BoardService;
+import com.powernote.skeleton.service.BasicBoardService;
 import com.powernote.skeleton.vo.PostDataVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/board")
-public class ApiBoardController {
+public class ApiBacisBoardController {
     @Autowired
-    BoardService boardService;
+    BasicBoardService boardService;
 
 
     @PostMapping("write")
@@ -46,7 +46,5 @@ public class ApiBoardController {
         boardService.delete(postDataVo);
         return ResponseEntity.ok( new ResponseDto(MessageType.OK) );
     }
-
-
 
 }

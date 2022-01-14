@@ -65,6 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()  // 요청을 어떻게 보안을 걸것이냐에 대한 설정.
                 .antMatchers("/", "/main","/regist").permitAll()
                 .antMatchers("/hello").hasRole( UserRoleE.ROLE_USER.getRole() )
+                .antMatchers("/board/**").hasRole( UserRoleE.ROLE_USER.getRole() )
 //                .anyRequest().authenticated() // 이외에는 인증이 필요하다.
                 .and()
             .formLogin()          // 로그인 페이지 관련. 이항목이 없다면 403 페이지 오류가 발생.

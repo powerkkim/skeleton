@@ -6,8 +6,9 @@
 <body>
 
 <div class="content-wrapper" layout:fragment="content">
-    <input type="hidden" name="pageNumber" th:value="${pagesnav.getNumber()}"/>
-    <input type="hidden" name="pageSize" th:value="${pagesnav.getSize()}"/>
+    <input type="hidden" name="pageNumber" th:value="${pageInfo.getNumber()}"/>
+    <input type="hidden" name="pageSize" th:value="${pageInfo.getSize()}"/>
+    <input type="hidden" name="table_search_key" th:value="${#strings.isEmpty(pageInfo.getSearchKey())} ? 'title_content' : ${pageInfo.getSearchKey()}">
 
     <section class="content-header">
         <div class="container-fluid">
@@ -32,11 +33,10 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Bordered Table</h3>
+                            <h3 class="card-title">목록</h3>
                             <div class="card-tools">
                                 <div class="input-group input-group-sm" style="width: 150px;">
-                                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-                                    <input type="hidden" name="table_search_key" value="title_content">
+                                    <input type="text" name="table_search" class="form-control float-right" th:value="${pageInfo.getSearchWord()}" placeholder="Search">
 
                                     <div class="input-group-append">
                                         <button type="button" onclick="goSearch()" class="btn btn-default"><i class="fas fa-search"></i></button>
@@ -57,7 +57,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr id="idTableTr" th:each="item: ${pagesnav.getContent()}" th:object="${item}" >
+                                <tr id="idTableTr" th:each="item: ${pagesnav.getContent()}" th:object="${item}"  onclick="goView(this)">
                                     <td th:text="*{boardNo}">No</td>
                                     <td th:text="*{writer}">writer</td>
                                     <td th:text="*{title}">title</td>
@@ -71,7 +71,7 @@
                         <div class="card-footer clearfix">
                             <ul class="pagination m-0 float-left">
                                 <li class="page-item"><a class="btn btn-primary" href="/board/writeform" th:href="@{/board/writeform}" >글쓰기</a></li>
-                                <li class="page-item"><a class="btn btn-primary ml-2" href="#">목록</a></li>
+                                <li class="page-item"><a class="btn btn-primary ml-2" href="javascript:goList();" >목록</a></li>
                             </ul>
 
                             <div class="float-right" style="flex-grow: 1;" th:with="
@@ -82,7 +82,7 @@
                                     <li class="paginate_button page-item previous" th:classappend="${pagesnav.isFirst()} ? disabled : '' ">
                                         <a
                                                 class="page-link"
-                                                href="#"
+                                                href="javascript:void(0);"
                                                 th:onclick="|javascript:goPage('0', '${pagesnav.getSize()}')|"
                                                 th:text="'&laquo;'"></a></li>
                                     </li>
@@ -142,6 +142,11 @@
         window.location.href = fullUrl;
     }
 
+    function goList( ){
+        let url = /*[[@{/board/main?}]]*/ '/board/main';
+        window.location.href = url;
+    }
+
     function goPage(page, size){
         let url = /*[[@{/board/main?}]]*/ '/board/main?';
         let paraMeter = makeParam(page, size);
@@ -155,10 +160,21 @@
             "&searchKey="+$("input[name='table_search_key']").val()+
             "&searchWord="+$("input[name='table_search']").val()
         ;
-        // let query = "number="+page+
-        //     "&size="+size
-        // ;
         return query;
+    }
+
+    function goView( element ){
+        boarNo = element.firstElementChild.textContent.trim();
+        page = $("input[name='pageNumber']").val();
+        size = $("input[name='pageSize']").val();
+
+        let url = /*[[@{/board/view?}]]*/ '/board/view?';
+        let paraMeter = makeParam(page, size);
+        let addParam = "&boardNo=" + boarNo;
+
+        let fullUrl = encodeURI(url+paraMeter+addParam);
+
+        window.location.href = fullUrl;
     }
 </script>
 

@@ -1,26 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration monitorInterval="60">
+<Configuration xmlns="http://logging.apache.org/log4j/2.0/config">
 
-	<!-- Appender, Layout 설정 -->
     <Appenders>
-        <Console name="Console-Appender" target="SYSTEM_OUT">
-            <PatternLayout>
-                <pattern>
-                    %d | %p | %t | %m%n
-                </pattern>>
-            </PatternLayout>
+        <Console name="stdout" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d %5level [%t] - %msg%n"/>
         </Console>
     </Appenders>
 
-    <!--  Logger 설정 -->
-    <Loggers>  
-        <Logger name="com.powernote.skeleton" level="info" additivity="false">
-			<AppenderRef ref="Console-Appender" />
-		</Logger>
-        <Root>
-            <AppenderRef ref="Console-Appender"/>
+    <Loggers>
+        <Logger name="com.powernote.skeleton" level="trace" additivity="false">
+            <AppenderRef ref="stdout" />
+        </Logger>
+        <Root level="error" >
+            <AppenderRef ref="stdout"/>
         </Root>
-    </Loggers> 
-		
+    </Loggers>
+
 </Configuration>
+
+
+<!--<Configuration xmlns="http://logging.apache.org/log4j/2.0/config">-->
+
+<!--	&lt;!&ndash; Appender, Layout 설정 &ndash;&gt;-->
+<!--    <Appenders>-->
+<!--        <Console name="Console-Appender" target="SYSTEM_OUT">-->
+<!--            <PatternLayout>-->
+<!--                <pattern>-->
+<!--                    %d | %p | %t | %m%n-->
+<!--                </pattern>>-->
+<!--            </PatternLayout>-->
+<!--        </Console>-->
+<!--    </Appenders>-->
+
+<!--    &lt;!&ndash;  Logger 설정 &ndash;&gt;-->
+<!--    <Loggers>  -->
+<!--        <Logger name="com.powernote.skeleton" level="info" additivity="false">-->
+<!--			<AppenderRef ref="Console-Appender" />-->
+<!--		</Logger>-->
+<!--        <Root>-->
+<!--            <AppenderRef ref="Console-Appender"/>-->
+<!--        </Root>-->
+<!--    </Loggers> -->
+<!--		-->
+<!--</Configuration>-->
 

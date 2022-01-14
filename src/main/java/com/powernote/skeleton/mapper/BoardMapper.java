@@ -21,7 +21,10 @@ public interface BoardMapper {
 
     int findByWordCount( Map<String, Object> mapperParam );
 
-    void update(PostDataVo postDataVo);
+    PostDataVo findByPostId(String boardNo);
+
+    int update(PostDataVo postDataVo);
 
     void delete(PostDataVo postDataVo);
+
 }
