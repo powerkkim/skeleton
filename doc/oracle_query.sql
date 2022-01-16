@@ -38,6 +38,7 @@ CREATE TABLE "TB_BOARD" (
                             "CONTENT" VARCHAR(2000) NOT NULL,
                             "WRITER" VARCHAR(1000) NOT NULL,
                             "USER_NO" NUMBER(12) NOT NULL,
+                            "VIEW_CNT" NUMBER(10) default 0,
                             "REG_DATE" DATE NOT NULL,
                             "UPT_DATE" DATE NOT NULL,
                             PRIMARY KEY ("BOARD_NO")
@@ -49,6 +50,7 @@ COMMENT ON COLUMN "TB_BOARD"."TITLE" IS '제목';
 COMMENT ON COLUMN "TB_BOARD"."CONTENT" IS '내용';
 COMMENT ON COLUMN "TB_BOARD"."WRITER" IS '글쓴이정보';
 COMMENT ON COLUMN "TB_BOARD"."USER_NO" IS '글쓴이 번호';
+COMMENT ON COLUMN "TB_BOARD"."VIEW_CNT" IS '조회수';
 COMMENT ON COLUMN "TB_USER"."REG_DATE" IS '등록일시';
 COMMENT ON COLUMN "TB_USER"."UPT_DATE" IS '수정일시';
 

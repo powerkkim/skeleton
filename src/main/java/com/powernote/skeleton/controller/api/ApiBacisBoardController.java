@@ -18,7 +18,7 @@ public class ApiBacisBoardController {
 
 
     @PostMapping("write")
-    public ResponseEntity c_boardWrite(PostDataVo postDataVo) {
+    public ResponseEntity c_boardWrite( @RequestBody PostDataVo postDataVo) {
 
         boardService.write(postDataVo);
 
@@ -36,7 +36,7 @@ public class ApiBacisBoardController {
     }
 
     @PutMapping("update")
-    public ResponseEntity u_update(PostDataVo postDataVo) {
+    public ResponseEntity u_update( @RequestBody PostDataVo postDataVo) {
         boardService.update(postDataVo);
         return ResponseEntity.ok( new ResponseDto(MessageType.OK) );
     }

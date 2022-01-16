@@ -31,6 +31,10 @@ public class BasicBoardController {
     @GetMapping(value = "/view")
     public String board(Model model, PageInfoDto rPageInfo, @RequestParam(value = "boardNo") String boardNo ) {
         PostDataVo postDataVo = boardService.findByPostId(boardNo);
+        int nUpCnt = boardService.updateViewCnt(postDataVo);
+        if( nUpCnt > 0 )
+            postDataVo.setViewCnt( postDataVo.getViewCnt()+1 );
+
         model.addAttribute("postData", postDataVo);
         model.addAttribute("pageInfo", rPageInfo);
         return "pages/basicboard_view";

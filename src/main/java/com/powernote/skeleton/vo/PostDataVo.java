@@ -17,6 +17,7 @@ public class PostDataVo {
     private Long userNo = 0L;
     private String title = "";
     private String content = "";
+    private int viewCnt = 0;
     private LocalDateTime regDate;
     private LocalDateTime uptDate;
 }

@@ -95,7 +95,6 @@ public class BasicBoardService {
 
     public PostDataVo findByPostId(String boardNo) {
         PostDataVo postDataVo = boardMapper.findByPostId(boardNo);
-
         return postDataVo;
     }
 
@@ -123,13 +122,19 @@ public class BasicBoardService {
             throw new BaseException("", MessageType.ERROR_LOGIN_001.toString(), HttpStatus.OK);
         }
 
-        return boardMapper.update(postDataVo);
+        int bResult = boardMapper.update(postDataVo);
+
+        log.info("postDataVo: DB update" );
+        return bResult;
     }
 
     public void delete(PostDataVo postDataVo) {
         boardMapper.delete(postDataVo);
     }
 
-
-
+    @Transactional
+    public int updateViewCnt( PostDataVo postDataVo ) {
+        int bResult = boardMapper.updateViewCnt(postDataVo);
+        return bResult;
+    }
 }

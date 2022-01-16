@@ -87,7 +87,8 @@
             },
             url: /*[[@{/api/board/write}]]*/ '/api/board/write',
             type: 'POST',
-            data: PostDataVo,
+            data: JSON.stringify(PostDataVo),
+            contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             success: function onData (data) {
                 console.log(data);
