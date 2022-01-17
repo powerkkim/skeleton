@@ -63,7 +63,7 @@ public class BasicBoardService {
     public Page<PostDataVo> read( PageInfoDto rPageInfo ) {
 
         if( !StringUtils.hasLength(rPageInfo.getDirection())  ){
-            rPageInfo.setStandard("board_no");
+            rPageInfo.setStandard("post_no");
         }
         log.info(rPageInfo.toString());
 

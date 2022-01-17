@@ -22,7 +22,7 @@ public class MyBatisConfig {
         sqlSessionFactoryBean.setDataSource(hikariDataSource);
         // jdbcTypeForNull 문제 해결. oracle null 데이터 입력시 문제.
         sqlSessionFactoryBean.setConfigLocation(new PathMatchingResourcePatternResolver().getResource("classpath:/config/mybatis-config.xml") );
-        sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:/mapper/*.xml"));
+        sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:/mapper/**/*.xml"));
 
         return sqlSessionFactoryBean.getObject();
     }

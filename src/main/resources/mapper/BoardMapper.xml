@@ -34,7 +34,7 @@
         ORDER BY POST_NO desc
         OFFSET #{offset} ROWS FETCH NEXT #{pageSize} ROWS ONLY
 
-<!--        select * from TB_BOARD-->
+<!--        select * from TB_BOARD_POST-->
 <!--        <where>-->
 <!--            <if test="title != null">title = #{title}</if>-->
 <!--            <if test="content != null">AND title like #{content}</if>-->
