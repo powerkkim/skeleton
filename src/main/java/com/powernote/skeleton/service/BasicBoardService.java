@@ -93,8 +93,8 @@ public class BasicBoardService {
         return dtoPages;
     }
 
-    public PostDataVo findByPostId(String boardNo) {
-        PostDataVo postDataVo = boardMapper.findByPostId(boardNo);
+    public PostDataVo findByPostId(String postNo) {
+        PostDataVo postDataVo = boardMapper.findByPostId(postNo);
         return postDataVo;
     }
 
@@ -133,8 +133,8 @@ public class BasicBoardService {
     }
 
     @Transactional
-    public int updateViewCnt( String boardNo ) {
-        int bResult = boardMapper.updateViewCnt(boardNo);
+    public int updateViewCnt( String postNo ) {
+        int bResult = boardMapper.updateViewCnt(postNo);
         return bResult;
     }
 }

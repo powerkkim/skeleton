@@ -15,7 +15,7 @@
     <input type="hidden" name="pageSize" th:value="${pageInfo.getSize()}"/>
     <input type="hidden" name="table_search_key" th:value="${#strings.isEmpty(pageInfo.getSearchKey())} ? 'title_content' : ${pageInfo.getSearchKey()}">
     <input type="hidden" name="table_search" th:value="${#strings.isEmpty(pageInfo.getSearchWord())} ? '' : ${pageInfo.getSearchWord()}">
-    <input type="hidden" name="boardNo" th:value="${postData.getBoardNo()}">
+    <input type="hidden" name="postNo" th:value="${postData.getPostNo()}">
 
     <section class="content-header">
         <div class="container-fluid">
@@ -96,7 +96,7 @@
 
     function goEdit( ){
         let url = /*[[@{/board/edit?}]]*/ '/board/edit';
-        let addparam = "boardNo="+$("input[name='boardNo']").val();
+        let addparam = "postNo="+$("input[name='postNo']").val();
         let fullUrl = encodeURI(url+addparam);
         window.location.href = fullUrl;
     }

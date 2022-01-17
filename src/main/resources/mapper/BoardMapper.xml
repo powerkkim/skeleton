@@ -3,8 +3,8 @@
 
 <mapper namespace="com.powernote.skeleton.mapper.BoardMapper">
     <insert id="save" parameterType="com.powernote.skeleton.vo.PostDataVo">
-        insert into TB_BOARD ( BOARD_NO ,  TITLE ,  CONTENT ,  WRITER,  USER_NO, REG_DATE ,  UPT_DATE ) values (
-            TB_BOARD_SEQ.NEXTVAL,
+        insert into TB_BOARD_POST ( POST_NO ,  TITLE ,  CONTENT ,  WRITER,  USER_NO, REG_DATE ,  UPT_DATE ) values (
+            TB_BOARD_POST_SEQ.NEXTVAL,
             #{title},
             #{content},
             #{writer},
@@ -15,23 +15,23 @@
     </insert>
 
     <select id="findAll" resultType="com.powernote.skeleton.vo.PostDataVo">
-        select * from TB_BOARD
+        select * from TB_BOARD_POST
     </select>
 
     <select id="findAllCount" resultType="int">
-        select count(*) from TB_BOARD
+        select count(*) from TB_BOARD_POST
     </select>
 
     <select id="findByWord" parameterType="HashMap" resultType="com.powernote.skeleton.vo.PostDataVo">
 <!--        oracle 12 이후 -->
         SELECT *
-        FROM TB_BOARD
+        FROM TB_BOARD_POST
         <where>
 <!--            <if test="title != null">title like  ('%'||#{title}||'%')</if>-->
 <!--            <if test="content != null">AND content like ('%'||#{content}||'%')</if>-->
             <if test="title_content != null">AND (title like ('%'||#{title_content}||'%') or content like ('%'||#{title_content}||'%'))</if>
         </where>
-        ORDER BY BOARD_NO desc
+        ORDER BY POST_NO desc
         OFFSET #{offset} ROWS FETCH NEXT #{pageSize} ROWS ONLY
 
 <!--        select * from TB_BOARD-->
@@ -39,7 +39,7 @@
 <!--            <if test="title != null">title = #{title}</if>-->
 <!--            <if test="content != null">AND title like #{content}</if>-->
 <!--        </where>-->
-<!--        order by board_no desc-->
+<!--        order by post_no desc-->
 <!--        limit #{pageSize}-->
 <!--        offset #{offset}-->
     </select>
@@ -47,7 +47,7 @@
     <select id="findByWordCount" resultType="Integer">
         SELECT count(*) from (
             SELECT *
-            FROM TB_BOARD
+            FROM TB_BOARD_POST
             <where>
                 <!--            <if test="title != null">title like  ('%'||#{title}||'%')</if>-->
                 <!--            <if test="content != null">AND content like ('%'||#{content}||'%')</if>-->
@@ -58,25 +58,25 @@
 
     <select id="findByPostId" parameterType="String" resultType="com.powernote.skeleton.vo.PostDataVo">
         SELECT *
-        FROM TB_BOARD
-        where BOARD_NO = #{boardNo}
+        FROM TB_BOARD_POST
+        where POST_NO = #{postNo}
     </select>
 
     <update id="update" parameterType="com.powernote.skeleton.vo.PostDataVo">
-        update TB_BOARD
+        update TB_BOARD_POST
         set TITLE = #{title},
             CONTENT = #{content},
             UPT_DATE = SYSDATE
-        where BOARD_NO = #{boardNo}
+        where POST_NO = #{postNo}
     </update>
 
     <update id="updateViewCnt" parameterType="String">
-        update TB_BOARD
+        update TB_BOARD_POST
         set VIEW_CNT = VIEW_CNT + 1
-        where BOARD_NO = #{boardNo}
+        where POST_NO = #{postNo}
     </update>
 
     <update id="delete" parameterType="com.powernote.skeleton.vo.PostDataVo">
-        select * from TB_BOARD
+        select * from TB_BOARD_POST
     </update>
 </mapper>

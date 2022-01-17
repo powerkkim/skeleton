@@ -36,7 +36,7 @@ public class BasicBoardController {
     }
 
     @GetMapping(value = "/view")
-    public String board(HttpServletRequest request, HttpServletResponse response, Model model, PageInfoDto rPageInfo, @RequestParam(value = "boardNo") String boardNo ) {
+    public String board(HttpServletRequest request, HttpServletResponse response, Model model, PageInfoDto rPageInfo, @RequestParam(value = "postNo") String postNo ) {
         // 저장된 쿠키 불러오기
         Cookie cookies[] = request.getCookies();
 
@@ -51,7 +51,7 @@ public class BasicBoardController {
         // 저장된 쿠키중에 read_count 만 불러오기
         String cookie_read_count = StringUtils.hasLength((String) mapCookie.get("read_count")) ? (String) mapCookie.get("read_count") : "";
         // 저장될 새로운 쿠키값 생성
-        String new_cookie_read_count = "|" + boardNo;
+        String new_cookie_read_count = "|" + postNo;
         StringUtils.hasLength(null);
 
         // 저장된 쿠키에 새로운 쿠키값이 존재하는 지 검사
@@ -61,11 +61,11 @@ public class BasicBoardController {
             cookie.setMaxAge(86400); // 초단위  하루 60초*60분*24시 = 86400
             response.addCookie(cookie);
 
-            int nUpCnt = boardService.updateViewCnt(boardNo);
+            int nUpCnt = boardService.updateViewCnt(postNo);
             if( nUpCnt <= 0 ) log.info( "updateViewCnt no update: {}", nUpCnt );
         }
 
-        PostDataVo postDataVo = boardService.findByPostId(boardNo);
+        PostDataVo postDataVo = boardService.findByPostId(postNo);
 
         model.addAttribute("postData", postDataVo);
         model.addAttribute("pageInfo", rPageInfo);
@@ -73,9 +73,9 @@ public class BasicBoardController {
     }
 
     @GetMapping(value = "/edit")
-    public String edit(Model model, @RequestParam(value = "boardNo") String boardNo ) {
+    public String edit(Model model, @RequestParam(value = "postNo") String postNo ) {
 
-        PostDataVo postDataVo = boardService.findByPostId(boardNo);
+        PostDataVo postDataVo = boardService.findByPostId(postNo);
         model.addAttribute("postData", postDataVo);
 
         return "pages/basicboard_editor_form";

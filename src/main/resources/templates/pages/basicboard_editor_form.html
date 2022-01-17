@@ -6,7 +6,7 @@
 <body>
 
 <div class="content-wrapper" layout:fragment="content">
-    <input type="hidden" name="boardNo" th:value="${postData.getBoardNo()}"/>
+    <input type="hidden" name="postNo" th:value="${postData.getPostNo()}"/>
 
     <section class="content-header">
         <div class="container-fluid">
@@ -75,7 +75,7 @@
     function goPosting () {
         console.log("goPosting");
         var PostDataVo = {
-            boardNo: $("input[name='boardNo']").val(),
+            postNo: $("input[name='postNo']").val(),
             writer: $("input[name='board-email']").val(),
             userNo: $("input[name='board-user-no']").val(),
             title: $("input[name='board-subject']").val(),
