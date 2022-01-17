@@ -133,8 +133,8 @@ public class BasicBoardService {
     }
 
     @Transactional
-    public int updateViewCnt( PostDataVo postDataVo ) {
-        int bResult = boardMapper.updateViewCnt(postDataVo);
+    public int updateViewCnt( String boardNo ) {
+        int bResult = boardMapper.updateViewCnt(boardNo);
         return bResult;
     }
 }

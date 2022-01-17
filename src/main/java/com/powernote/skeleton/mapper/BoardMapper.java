@@ -27,5 +27,5 @@ public interface BoardMapper {
 
     void delete(PostDataVo postDataVo);
 
-    int updateViewCnt(PostDataVo postDataVo);
+    int updateViewCnt(String boardNo);
 }

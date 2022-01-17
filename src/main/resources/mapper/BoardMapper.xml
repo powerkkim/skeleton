@@ -70,7 +70,7 @@
         where BOARD_NO = #{boardNo}
     </update>
 
-    <update id="updateViewCnt" parameterType="com.powernote.skeleton.vo.PostDataVo">
+    <update id="updateViewCnt" parameterType="String">
         update TB_BOARD
         set VIEW_CNT = VIEW_CNT + 1
         where BOARD_NO = #{boardNo}
