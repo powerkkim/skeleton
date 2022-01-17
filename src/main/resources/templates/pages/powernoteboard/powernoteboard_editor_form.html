@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout_common}"
+      >
+<body>
+
+<div class="content-wrapper" layout:fragment="content">
+    <input type="hidden" name="postNo" th:value="${postData.getPostNo()}"/>
+
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>게시판 글수정</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Simple Tables</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">글수정</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <form role="form">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="ID-input-name">작성자</label>
+                                    <input type="name" name="board-email" class="form-control" id="ID-input-name" th:value="${#authentication.principal.email}" placeholder="Enter name" readonly>
+                                    <input type="hidden" name="board-user-no" class="form-control" id="ID-input-user-no" th:value="${#authentication.principal.userNo}" >
+                                </div>
+                                <div class="form-group">
+                                    <label for="ID-input-subject">제목</label>
+                                    <input type="text" name="board-subject"  class="form-control" id="ID-input-subject" placeholder="제목" th:value="${postData.getTitle()}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="ID-input-contents">내용</label>
+                                    <textarea name="board-contents" class="form-control" id="ID-input-contents" rows="4" th:text="${postData.getContent()}"></textarea>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+
+                            <div class="card-footer">
+                                <button type="button" onclick="goPosting()" class="btn btn-primary">글등록</button>
+                                <button type="button" onclick="goCancel()" class="btn btn-secondary float-right">취소</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+</div>
+
+
+<script layout:fragment="jsscript" th:inline="javascript">
+    $(document).ready(function(){
+        console.log("page loaded");
+    });
+
+    function goPosting () {
+        console.log("goPosting");
+        var PostDataVo = {
+            postNo: $("input[name='postNo']").val(),
+            writer: $("input[name='board-email']").val(),
+            userNo: $("input[name='board-user-no']").val(),
+            title: $("input[name='board-subject']").val(),
+            content: $("textarea[name='board-contents']").val(),
+        };
+
+        $.ajax({
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("isAjaxLogin","true");
+            },
+            url: /*[[@{/api/powernoteboard/update}]]*/ '/api/powernoteboard/update',
+            type: 'PUT',
+            data: JSON.stringify(PostDataVo),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function onData (data) {
+                console.log(data);
+                if (data.result == "OK") {
+                    alert("글이 등록 되었습니다. ");
+                    window.location = /*[[@{/powernoteboard/main}]]*/ '/powernoteboard/main';
+                }
+                else {
+                    alert("글 등록시 오륙 발생하였습니다. ");
+                }
+            },
+            error: function onError (error) {
+                console.log(error.responseJSON);
+                let errMsg =  error.responseJSON;
+                alert("오류가 발생하였습니다. :" + errMsg.message );
+            }
+        });
+    }
+
+    function goCancel () {
+        console.log("goCancel");
+        window.history.back();
+    }
+</script>
+
+
+
+</body>
+
+
+</html>

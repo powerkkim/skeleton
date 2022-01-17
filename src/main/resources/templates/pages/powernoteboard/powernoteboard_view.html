@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout_common}"
+      >
+
+<th:block layout:fragment="localcss">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/basicboard.css}">
+
+</th:block>
+
+<body>
+<div class="content-wrapper" layout:fragment="content">
+    <input type="hidden" name="pageNumber" th:value="${pageInfo.getNumber()}"/>
+    <input type="hidden" name="pageSize" th:value="${pageInfo.getSize()}"/>
+    <input type="hidden" name="table_search_key" th:value="${#strings.isEmpty(pageInfo.getSearchKey())} ? 'title_content' : ${pageInfo.getSearchKey()}">
+    <input type="hidden" name="table_search" th:value="${#strings.isEmpty(pageInfo.getSearchWord())} ? '' : ${pageInfo.getSearchWord()}">
+    <input type="hidden" name="postNo" th:value="${postData.getPostNo()}">
+
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>게시판</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Simple Tables</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2 class="lead"><b ><span th:text="${postData.getTitle()}">Title</span></b></h2>
+                            </div>
+                            <div class="row">
+                                <div class="col-7">
+                                    <div class="user-block">
+                                        <img class="img-circle img-bordered-sm" th:src="@{/images/profile_default.png}" alt="user image">
+                                        <span class="username">
+                                          <a href="#" th:text="${postData.getWriter()}">Jonathan Burke Jr.</a>
+                                        </span>
+                                        <span class="description"><span th:text="${postData.getUptDate()}">7:30 PM today</span>   조회: <span th:text="${postData.getViewCnt()}">0</span> </span>
+                                    </div>
+                                </div>
+                                <div class="col-5 text-right">
+                                    댓글 0 , url 복사
+                                    <img src="../../dist/img/user1-128x128.jpg" alt="" class="img-circle img-fluid">
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body" >
+                            <span th:text="${postData.getContent()}">글내용</span>
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer clearfix">
+                            <ul class="pagination m-0 float-left">
+                                <li class="page-item"><a class="btn btn-primary" href="javascript:goWrite();">글쓰기</a></li>
+                                <li class="page-item"><a class="btn btn-primary ml-2" href="javascript:goEdit();">수정</a></li>
+                                <li class="page-item"><a class="btn btn-primary ml-2" href="javascript:goList();" >목록</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+</div>
+
+<script layout:fragment="jsscript" th:inline="javascript">
+    $(document).ready(function(){
+        console.log("page loaded");
+    });
+
+    function goList( ){
+        page = $("input[name='pageNumber']").val();
+        size = $("input[name='pageSize']").val();
+
+        let url = /*[[@{/powernoteboard/main?}]]*/ '/powernoteboard/main';
+        let paraMeter = makeParam(page, size);
+        let fullUrl = encodeURI(url+paraMeter);
+        window.location.href = fullUrl;
+    }
+
+    function goEdit( ){
+        let url = /*[[@{/powernoteboard/edit?}]]*/ '/powernoteboard/edit';
+        let addparam = "postNo="+$("input[name='postNo']").val();
+        let fullUrl = encodeURI(url+addparam);
+        window.location.href = fullUrl;
+    }
+
+    function makeParam( page, size ){
+        let query = "number="+page+
+            "&size="+size+
+            "&searchKey="+$("input[name='table_search_key']").val()+
+            "&searchWord="+$("input[name='table_search']").val()
+        ;
+        return query;
+    }
+
+    function goWrite( ){
+        let url = /*[[@{/powernoteboard/writeform?}]]*/ '/powernoteboard/writeform';
+        window.location.href = url;
+    }
+</script>
+
+
+</body>
+
+
+</html>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+
+<mapper namespace="com.powernote.skeleton.mapper.PowernoteBoardMapper">
+    <insert id="save" parameterType="com.powernote.skeleton.vo.PowerNotePostDataVo">
+        insert into TB_POWEWRNOTEBOARD_POST ( POST_NO, BOARD_NO, CATEGORY_NAME, TITLE ,  CONTENT ,  WRITER,  USER_NO, REG_DATE ,  UPT_DATE ) values (
+            TB_POWEWRNOTEBOARD_POST_SEQ.NEXTVAL,
+            #{boardNo},
+            #{categoryName},
+            #{title},
+            #{content},
+            #{writer},
+            #{userNo},
+            SYSDATE,
+            SYSDATE
+        )
+    </insert>
+
+    <select id="findAll" resultType="com.powernote.skeleton.vo.PowerNotePostDataVo">
+        select * from TB_POWEWRNOTEBOARD_POST
+    </select>
+
+    <select id="findAllCount" resultType="int">
+        select count(*) from TB_POWEWRNOTEBOARD_POST
+    </select>
+
+    <select id="findByWord" parameterType="HashMap" resultType="com.powernote.skeleton.vo.PowerNotePostDataVo">
+<!--        oracle 12 이후 -->
+        SELECT *
+        FROM TB_POWEWRNOTEBOARD_POST
+        <where>
+<!--            <if test="title != null">title like  ('%'||#{title}||'%')</if>-->
+            <if test="boardNo != null">AND BOARD_NO = #{boardNo}</if>
+            <if test="categoryName != null">AND CATEGORY_NAME = #{categoryName}</if>
+            <if test="title_content != null">AND (title like ('%'||#{title_content}||'%') or content like ('%'||#{title_content}||'%'))</if>
+        </where>
+        ORDER BY POST_NO desc
+        OFFSET #{offset} ROWS FETCH NEXT #{pageSize} ROWS ONLY
+
+<!--        select * from TB_BOARD_POST-->
+<!--        <where>-->
+<!--            <if test="title != null">title = #{title}</if>-->
+<!--            <if test="content != null">AND title like #{content}</if>-->
+<!--        </where>-->
+<!--        order by post_no desc-->
+<!--        limit #{pageSize}-->
+<!--        offset #{offset}-->
+    </select>
+
+    <select id="findByWordCount" resultType="Integer">
+        SELECT count(*) from (
+            SELECT *
+            FROM TB_POWEWRNOTEBOARD_POST
+            <where>
+                <!--            <if test="title != null">title like  ('%'||#{title}||'%')</if>-->
+                <if test="boardNo != null">AND BOARD_NO = #{boardNo}</if>
+                <if test="categoryName != null">AND CATEGORY_NAME = #{categoryName}</if>
+                <if test="title_content != null">AND (title like ('%'||#{title_content}||'%') or content like ('%'||#{title_content}||'%'))</if>
+            </where>
+        )
+    </select>
+
+    <select id="findByPostId" parameterType="String" resultType="com.powernote.skeleton.vo.PowerNotePostDataVo">
+        SELECT *
+        FROM TB_POWEWRNOTEBOARD_POST
+        where POST_NO = #{postNo}
+    </select>
+
+    <update id="update" parameterType="com.powernote.skeleton.vo.PowerNotePostDataVo">
+        update TB_POWEWRNOTEBOARD_POST
+        set TITLE = #{title},
+            CONTENT = #{content},
+            UPT_DATE = SYSDATE
+        where POST_NO = #{postNo}
+    </update>
+
+    <update id="updateViewCnt" parameterType="String">
+        update TB_POWEWRNOTEBOARD_POST
+        set VIEW_CNT = VIEW_CNT + 1
+        where POST_NO = #{postNo}
+    </update>
+
+    <update id="delete" parameterType="com.powernote.skeleton.vo.PowerNotePostDataVo">
+        select * from TB_POWEWRNOTEBOARD_POST
+    </update>
+</mapper>

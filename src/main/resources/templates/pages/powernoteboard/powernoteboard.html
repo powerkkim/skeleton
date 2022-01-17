@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout_common}"
+      >
+<body>
+
+<div class="content-wrapper" layout:fragment="content">
+    <input type="hidden" name="pageNumber" th:value="${pageInfo.getNumber()}"/>
+    <input type="hidden" name="pageSize" th:value="${pageInfo.getSize()}"/>
+    <input type="hidden" name="table_search_key" th:value="${#strings.isEmpty(pageInfo.getSearchKey())} ? 'title_content' : ${pageInfo.getSearchKey()}">
+
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>게시판</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Simple Tables</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">목록</h3>
+                            <div class="card-tools">
+                                <div class="input-group input-group-sm" style="width: 150px;">
+                                    <input type="text" name="table_search" class="form-control float-right" th:value="${pageInfo.getSearchWord()}" placeholder="Search">
+
+                                    <div class="input-group-append">
+                                        <button type="button" onclick="goSearch()" class="btn btn-default"><i class="fas fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body p-0" >
+                            <table class="table table-hover pp-table-fiexd">
+                                <thead>
+                                <tr>
+                                    <th style="width: 10%">No</th>
+                                    <th style="width: 10%">writer</th>
+                                    <th style="width: 10%">Title</th>
+                                    <th style="width: 40%">contetnt</th>
+                                    <th style="width: 20%">date</th>
+                                    <th style="width: 10%">조회수</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr id="idTableTr" th:each="item: ${pagesnav.getContent()}" th:object="${item}"  onclick="goView(this)">
+                                    <td th:text="*{postNo}">No</td>
+                                    <td th:text="*{writer}">writer</td>
+                                    <td th:text="*{title}">title</td>
+                                    <td th:text="*{content}">content</td>
+                                    <td th:text="*{uptDate}">등록일</td>
+                                    <td th:text="*{viewCnt}">조회수</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer clearfix">
+                            <ul class="pagination m-0 float-left">
+                                <li class="page-item"><a class="btn btn-primary" href="javascript:goWrite();">글쓰기</a></li>
+                                <li class="page-item"><a class="btn btn-primary ml-2" href="javascript:goList();" >목록</a></li>
+                            </ul>
+
+                            <div class="float-right" style="flex-grow: 1;" th:with="
+                                                   viewpagecnt=6,
+                                                   start=${(pagesnav.number/viewpagecnt)*viewpagecnt + 1},
+                                                   end=( ${start -1 + viewpagecnt < pagesnav.totalPages ? start -1 + viewpagecnt : (pagesnav.totalPages == 0 ? 1 : pagesnav.totalPages )})">
+                                <ul class="pagination pagination-sm m-0 float-right">
+                                    <li class="paginate_button page-item previous" th:classappend="${pagesnav.isFirst()} ? disabled : '' ">
+                                        <a
+                                                class="page-link"
+                                                href="javascript:void(0);"
+                                                th:onclick="|javascript:goPage('0', '${pagesnav.getSize()}')|"
+                                                th:text="'&laquo;'"></a></li>
+                                    </li>
+                                    <li class="paginate_button page-item previous" th:classappend="${pagesnav.isFirst()} ? disabled : ''">
+                                        <a
+                                                class="page-link"
+                                                href="javascript:void(0);"
+                                                th:onclick="|javascript:goPage('${pagesnav.number-1}', '${pagesnav.getSize()}')|"
+                                                th:text="'&lt;'"></a>
+                                    </li>
+                                    <li class="paginate_button page-item" th:each="pageseq: ${#numbers.sequence(start, end)}" th:classappend="${pagesnav.getNumber()} == (${pageseq}-1) ? active : ''">
+                                        <a
+                                                class="page-link"
+                                                href="javascript:void(0);"
+                                                th:onclick="|javascript:goPage('${pageseq-1}', '${pagesnav.getSize()}')|"
+                                                th:text="${pageseq}"></a></li>
+                                    </li>
+                                    <li class="paginate_button page-item" th:classappend="${pagesnav.isLast()} ? disabled : ''">
+                                        <a
+                                                class="page-link"
+                                                href="javascript:void(0);"
+                                                th:onclick="|javascript:goPage('${pagesnav.number + 1}', '${pagesnav.getSize()}')|"
+                                                th:text="'&gt;'"></a>
+                                    </li>
+                                    <li class="paginate_button page-item" th:classappend="${pagesnav.isLast()} ? disabled : ''">
+                                        <a
+                                                class="page-link"
+                                                href="javascript:void(0);"
+                                                th:onclick="|javascript:goPage('${pagesnav.totalPages-1}', '${pagesnav.getSize()}')|"
+                                                th:text="'&raquo;'"></a></li>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+</div>
+
+<script layout:fragment="jsscript" th:inline="javascript">
+    $(document).ready(function(){
+        console.log("page loaded");
+    });
+
+    function goSearch( ){
+        page = 0;
+        size = 10;
+
+        let url = /*[[@{/powernoteboard/main?}]]*/ '/powernoteboard/main?';
+
+        let paraMeter = makeParam(page, size);
+        let fullUrl = encodeURI(url+paraMeter);
+        window.location.href = fullUrl;
+    }
+
+    function goList( ){
+        let url = /*[[@{/powernoteboard/main?}]]*/ '/powernoteboard/main';
+        window.location.href = url;
+    }
+
+    function goPage(page, size){
+        let url = /*[[@{/powernoteboard/main?}]]*/ '/powernoteboard/main?';
+        let paraMeter = makeParam(page, size);
+        let fullUrl = encodeURI(url+paraMeter);
+        window.location.href = fullUrl;
+    }
+
+    function makeParam( page, size ){
+        let query = "number="+page+
+            "&size="+size+
+            "&searchKey="+$("input[name='table_search_key']").val()+
+            "&searchWord="+$("input[name='table_search']").val()
+        ;
+        return query;
+    }
+
+    function goView( element ){
+        boarNo = element.firstElementChild.textContent.trim();
+        page = $("input[name='pageNumber']").val();
+        size = $("input[name='pageSize']").val();
+
+        let url = /*[[@{/powernoteboard/view?}]]*/ '/powernoteboard/view?';
+        let paraMeter = makeParam(page, size);
+        let addParam = "&postNo=" + boarNo;
+
+        let fullUrl = encodeURI(url+paraMeter+addParam);
+
+        window.location.href = fullUrl;
+    }
+
+    function goWrite( ){
+        let url = /*[[@{/powernoteboard/writeform?}]]*/ '/powernoteboard/writeform';
+        window.location.href = url;
+    }
+</script>
+
+
+</body>
+
+
+</html>
