@@ -13,7 +13,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import javax.sql.DataSource;
 
 @Configuration
-@MapperScan(basePackages = "com.powernote.skeleton.mapper", sqlSessionTemplateRef = "mySqlSessionTemplate")
+@MapperScan(basePackages = "com.powernote.skeleton.**.mapper", sqlSessionTemplateRef = "mySqlSessionTemplate")
 public class MyBatisConfig {
 
     @Bean(name="mysqlSessionFactory")

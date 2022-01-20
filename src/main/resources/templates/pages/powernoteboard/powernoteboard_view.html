@@ -5,8 +5,7 @@
       >
 
 <th:block layout:fragment="localcss">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/basicboard.css}">
-
+    <link rel="stylesheet" type="text/css" th:href="@{/css/powernotetboard.css}">
 </th:block>
 
 <body>
@@ -47,22 +46,98 @@
                                     <div class="user-block">
                                         <img class="img-circle img-bordered-sm" th:src="@{/images/profile_default.png}" alt="user image">
                                         <span class="username">
-                                          <a href="#" th:text="${postData.getWriter()}">Jonathan Burke Jr.</a>
+                                          <a href="#" th:text="${postData.getUserName()}">Jonathan Burke Jr.</a>
                                         </span>
                                         <span class="description"><span th:text="${postData.getUptDate()}">7:30 PM today</span>   조회: <span th:text="${postData.getViewCnt()}">0</span> </span>
                                     </div>
                                 </div>
                                 <div class="col-5 text-right">
-                                    댓글 0 , url 복사
+                                    댓글 0, url 복사
                                     <img src="../../dist/img/user1-128x128.jpg" alt="" class="img-circle img-fluid">
                                 </div>
                             </div>
-
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body" >
-                            <span th:text="${postData.getContent()}">글내용</span>
+                            <div>
+                                <span th:text="${postData.getContent()}">글내용</span>
+                            </div>
+                            <!-- 좋아요, 공유-->
+                            <div class="mt-5 mb-2">
+                                <a href="#" class="link-black text-sm mr-2"><i class="fas fa-share mr-1"></i> Share</a>
+                                <a href="#" class="link-black text-sm"><i class="far fa-thumbs-up mr-1"></i> Like</a>
+                                <span class="float-right">
+                                  <a href="#" class="link-black text-sm">
+                                    <i class="far fa-comments mr-1"></i> Comments (5)
+                                  </a>
+                                </span>
+                            </div>
+                            <hr>
+                            <div>
+                                <div class="mb-2">
+                                    <span class="pp-font-size17 pp-font-bold mr-3">댓글</span>
+                                    <span class="pp-font-size13 pp-font-bold">등록순</span>
+                                    <span class="pp-font-size13">최신순</span>
+                                    <span class="pp-font-size13">@</span>
+                                </div>
+                                <ul class="pp-ul-comment">
+                                    <li class="pp-li-comment" th:each="item: ${commentList}" th:object="${item}" th:classappend="*{commentDepth} > 0 ? 'pp-li-comment-reply' : '' " >
+                                        <div class="user-block">
+                                            <input type="hidden" name="item-comment-no" th:value="*{commentNo}" >
+                                            <input type="hidden" name="item-comment-gno" th:value="*{commentGno}" >
+                                            <input type="hidden" name="item-comment-gord" th:value="*{commentGord}" >
+                                            <input type="hidden" name="item-comment-depth" th:value="*{commentDepth}" >
+                                            <input type="hidden" name="item-comment-parUserNo" th:value="*{parUserNo}">
+                                            <input type="hidden" name="item-comment-parUserWriter" th:value="*{parUserWriter}" >
+                                            <input type="hidden" name="item-comment-userNo" th:value="*{userNo}" >
+                                            <input type="hidden" name="item-comment-userEmail" th:value="*{writer}" >
+
+                                            <img class="img-circle img-bordered-sm" th:src="@{/images/profile_default.png}" alt="user image">
+                                            <span class="username">
+                                                <a href="#" th:text="*{writer}">name</a>
+                                                <a href="#" class="float-right btn-tool"><i class="fas fa-ellipsis-v"></i></a>
+                                            </span>
+                                            <span  class="pp-comment-content">
+                                                <span th:if="*{parUserWriter != ' ' and commentDepth >= 2}" th:text="*{parUserWriter}" class="mr-3">댓글자: </span>
+                                                <span th:text="*{content}"></span>
+                                            </span>
+                                            <span class="description  mt-2" >
+                                                 <span th:text="*{regDate}">2022-01-19T05:00:43</span>
+                                                 <a href="javascript:void(0);" onclick="goCommentReplyEdit(this)"><span> 답글쓰기</span></a>
+                                            </span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <div class="pp-comment-write-area">
+                                    <div class="pp-comment-write-infobox">
+                                        <div class="mb-3">
+                                            <input type="hidden" name="post-comment-gno" id="post-comment-gno" th:value="-1" >
+                                            <input type="hidden" name="post-comment-gord" id="post-comment-gord" th:value="0" >
+                                            <input type="hidden" name="post-comment-depth" id="post-comment-depth" th:value="0" >
+                                            <input type="hidden" name="post-comment-parUserNo" id="post-comment-parUserNo" th:value="${postData.getUserNo()}">
+                                            <input type="hidden" name="post-comment-parUserWriter" id="post-comment-parUserWriter" th:value="${postData.getWriter()}" >
+                                            <input type="hidden" name="post-comment-userNo" id="post-comment-userNo" th:value="${#authentication.principal.userNo}" >
+                                            <input type="hidden" name="post-comment-userEmail" id="post-comment-userEmail" th:value="${#authentication.principal.email}" >
+                                            <input type="hidden" name="post-comment-username" id="post-comment-username" th:value="${#authentication.principal.username}" >
+
+                                            <div class="pp-font-size13 pp-font-bold" th:text="${#authentication.principal.username}">작은하늘00</div>
+
+                                            <div class="pp-comment-write-textcnt text-right pp-font-size12" style="position: absolute; top: 2px; right: 8px;">100/3000</div>
+                                        </div>
+                                        <textarea  class="pp-textarea-autosize"  name="post-comment-content" id="post-comment-content"  placeholder="댓글을 남겨보세요" rows="1" style="height: 33px; "></textarea>
+                                    </div>
+                                    <div class="pp-comment-attach-tool">
+                                        <div>
+                                            <i class="fas fa-camera"></i>
+                                        </div>
+                                        <button class="btn btn-success btn-sm"  style="position: absolute; bottom: 2px; right: 8px;" onclick="goComment(this)">등록</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
                         <!-- /.card-body -->
                         <div class="card-footer clearfix">
                             <ul class="pagination m-0 float-left">
@@ -81,7 +156,7 @@
 
 <script layout:fragment="jsscript" th:inline="javascript">
     $(document).ready(function(){
-        console.log("page loaded");
+        $('textarea.pp-textarea-autosize').height( 33 );
     });
 
     function goList( ){
@@ -113,6 +188,252 @@
     function goWrite( ){
         let url = /*[[@{/powernoteboard/writeform?}]]*/ '/powernoteboard/writeform';
         window.location.href = url;
+    }
+
+    $('textarea.pp-textarea-autosize').on('keyup', function () {
+        console.log( $(this).height() );
+        $(this).height(1).height( $(this).prop('scrollHeight')+16 );
+    });
+
+    function goCommentReplyEdit( element ){
+        if( $('#reply-edit-area').length > 0 ) {
+            $('#reply-edit-area').remove();
+        }
+
+        let findCurli = $(element).closest('li.pp-li-comment');
+        let commentGno = Number( $(findCurli).find("input[name='item-comment-gno']").val() );
+        let commentGorder = $("input[name='item-comment-gno']:input[value='" +commentGno + "']").length;
+        console.log("commentGorder :" + commentGorder);
+        let commentDepth = Number( $(findCurli).find("input[name='item-comment-depth']").val() ) + 1;
+        if ( commentDepth > 2 ) commentDepth = 2;
+        let parUserNo = $(findCurli).find("input[name='item-comment-userNo']").val();
+        let parUserWriter = $(findCurli).find("input[name='item-comment-userEmail']").val();
+
+        let userNo = $('#post-comment-userNo').val();
+        let userEmail = $('#post-comment-userEmail').val();
+        let username = $('#post-comment-username').val();
+
+        let html =`<li class="pp-li-comment pp-li-comment-reply" id="reply-edit-area">
+                    <div class="pp-comment-write-area">
+                        <div class="pp-comment-write-infobox">
+                            <div class="mb-3">
+                                <input type="hidden" name="post-comment-gno" value="${commentGno}">
+                                <input type="hidden" name="post-comment-gord" value="${commentGorder}">
+                                <input type="hidden" name="post-comment-depth" value="${commentDepth}">
+                                <input type="hidden" name="post-comment-parUserNo" value="${parUserNo}">
+                                <input type="hidden" name="post-comment-parUserWriter" value="${parUserWriter}">
+                                <input type="hidden" name="post-comment-userNo" value="${userNo}">
+                                <input type="hidden" name="post-comment-userEmail" value="${userEmail}">
+                                <input type="hidden" name="post-comment-username" value="${username}">
+                                <div class="pp-font-size13 pp-font-bold" >${username}
+                                </div>
+                                <div class="pp-comment-write-textcnt text-right pp-font-size12" style="position: absolute; top: 2px; right: 8px;">100/3000
+                                </div>
+                            </div>
+                            <textarea class="pp-textarea-autosize" name="post-comment-content" placeholder="댓글을 남겨보세요" rows="1" style="height: 33px; "></textarea>
+                        </div>
+                        <div class="pp-comment-attach-tool">
+                            <div>
+                                <i class="fas fa-camera"></i>
+                            </div>
+                            <button class="btn btn-success btn-sm" style="position: absolute; bottom: 2px; right: 8px;"
+                                    onClick="goCommentReply(this)">등록
+                            </button>
+                        </div>
+                    </div>
+                </li>`;
+
+        $(findCurli).after(html);
+    }
+
+
+    function goCommentReply( element ){
+        let findCurli = $(element).closest('.pp-comment-write-area');
+
+        let postNo = $("input[name='postNo']").val();
+        let commentGno = Number( $(findCurli).find("input[name='post-comment-gno']").val() );
+        let commentGorder = Number( $(findCurli).find("input[name='post-comment-gord']").val() );
+        let commentDepth = Number( $(findCurli).find("input[name='post-comment-depth']").val() );
+        if ( commentDepth > 2 ) commentDepth = 2;
+        let parUserNo = Number( $(findCurli).find("input[name='post-comment-parUserNo']").val() );
+        // let parUserWriter = $(findCurli).find("input[name='post-comment-parUserWriter']").val();
+        let content = $(findCurli).find("textarea[name='post-comment-content']").val();
+
+        let userNo = $('#post-comment-userNo').val();
+        // let userEmail = $('#post-comment-userEmail').val();
+
+        var PowerNoteCommentDataDto = {
+            commentNo: "-1",
+            postNo: postNo,
+            commentGno: commentGno,
+            commentGord: commentGorder,
+            commentDepth: commentDepth,
+            parUserNo: parUserNo,
+            userNo: userNo,
+            content: content,
+        };
+
+        console.log( PowerNoteCommentDataDto );
+        $.ajax({
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("isAjaxLogin","true");
+            },
+            url: /*[[@{/api/powernoteboard/Comment/write}]]*/ '/api/powernoteboard/Comment/write',
+            type: 'POST',
+            data: JSON.stringify(PowerNoteCommentDataDto),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function onData (data) {
+                console.log(data);
+                if (data.result == "OK") {
+                    alert("글이 등록 되었습니다. ");
+
+                    $(findCurli).find("textarea[name='post-comment-content']").val(""); // textarea 초기화
+                    funAddCommentReply(data.data);
+                }
+                else {
+                    alert("글 등록시 오륙 발생하였습니다. ");
+                }
+            },
+            error: function onError (error) {
+                console.log(error.responseJSON);
+                let errMsg =  error.responseJSON;
+                alert("오류가 발생하였습니다. :" + errMsg.message );
+            }
+        });
+    }
+
+    function goComment( element ){
+        let findCurli = $(element).closest('.pp-comment-write-area');
+
+        let postNo = $("input[name='postNo']").val();
+        let commentGno = Number( $(findCurli).find("input[name='post-comment-gno']").val() );
+        let commentGorder = Number( $(findCurli).find("input[name='post-comment-gord']").val() );
+        let commentDepth = Number( $(findCurli).find("input[name='post-comment-depth']").val() );
+        if ( commentDepth > 2 ) commentDepth = 2;
+        let parUserNo = Number( $(findCurli).find("input[name='post-comment-parUserNo']").val() );
+        let parUserWriter = $(findCurli).find("input[name='post-comment-parUserWriter']").val();
+        let content = $(findCurli).find("textarea[name='post-comment-content']").val();
+
+        let userNo = $('#post-comment-userNo').val();
+        let userEmail = $('#post-comment-userEmail').val();
+
+        var CommentDataVo = {
+            commentNo: "-1",
+            postNo: postNo,
+            commentGno: commentGno,
+            commentGord: commentGorder,
+            commentDepth: commentDepth,
+            parUserNo: parUserNo,
+            parUserWriter: parUserWriter,
+            userNo: userNo,
+            writer: userEmail,
+            content: content,
+        };
+
+        console.log( CommentDataVo );
+        $.ajax({
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("isAjaxLogin","true");
+            },
+            url: /*[[@{/api/powernoteboard/Comment/write}]]*/ '/api/powernoteboard/Comment/write',
+            type: 'POST',
+            data: JSON.stringify(CommentDataVo),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function onData (data) {
+                console.log(data);
+                if (data.result == "OK") {
+                    alert("글이 등록 되었습니다. ");
+
+                    $("#post-comment-content").val(""); // textarea 초기화
+                    funAddComment(data.data);
+                }
+                else {
+                    alert("글 등록시 오륙 발생하였습니다. ");
+                }
+            },
+            error: function onError (error) {
+                console.log(error.responseJSON);
+                let errMsg =  error.responseJSON;
+                alert("오류가 발생하였습니다. :" + errMsg.message );
+            }
+        });
+    }
+
+    function funAddCommentReply( commentData ) {
+        console.log( commentData);
+        if( $('#reply-edit-area').length > 0 ) {
+            $('#reply-edit-area').remove();
+        }
+
+        let findCurli = $("input[name='item-comment-gno']:input[value='" +commentData.commentGno + "']").last().closest('.pp-li-comment');
+
+        console.log(findCurli);
+        let html = `<li class="pp-li-comment pp-li-comment-reply">
+            <div class="user-block">
+            <input type="hidden" name="item-comment-no" value="${ commentData.commentNo }">
+            <input type="hidden" name="item-comment-gno" value="${ commentData.commentGno}">
+            <input type="hidden" name="item-comment-gord" value="${ commentData.commentGord}">
+            <input type="hidden" name="item-comment-depth" value="${ commentData.commentDepth}">
+            <input type="hidden" name="item-comment-parUserNo" value="${ commentData.parUserNo}">
+            <input type="hidden" name="item-comment-parUserWriter" value="${ commentData.parUserWriter}">
+            <input type="hidden" name="item-comment-userNo" value="${ commentData.userNo}">
+            <input type="hidden" name="item-comment-userEmail" value="${ commentData.writer}">
+            <img class="img-circle img-bordered-sm" src="/images/profile_default.png" alt="user image">
+            <span class="username">
+                <a href="#" > ${ commentData.writer}</a>
+                <a href="#" class="float-right btn-tool"><i
+                    class="fas fa-ellipsis-v"></i></a>
+            </span>
+
+            <span class="pp-comment-content">
+                ${ (commentData.parUserWriter != ' ' && commentData.commentDepth >=2) ?
+                    '<span class="mr-3">' + commentData.parUserWriter + '</span>'
+                :
+                    ''
+                }
+                <span>${ commentData.content}</span>
+            </span>
+            <span class="description  mt-2">
+                 <span >${ commentData.regDate}</span>
+                 <a href="javascript:void(0);" onclick="goCommentReplyEdit(this)"><span> 답글쓰기</span></a>
+            </div>
+        </li>`;
+
+        $(findCurli).after(html);
+    }
+
+    function funAddComment( commentData ) {
+        console.log( commentData);
+
+        let html = `<li class="pp-li-comment">
+            <div class="user-block">
+            <input type="hidden" name="item-comment-no" value="${ commentData.commentNo }">
+            <input type="hidden" name="item-comment-gno" value="${ commentData.commentGno}">
+            <input type="hidden" name="item-comment-gord" value="${ commentData.commentGord}">
+            <input type="hidden" name="item-comment-depth" value="${ commentData.commentDepth}">
+            <input type="hidden" name="item-comment-parUserNo" value="${ commentData.parUserNo}">
+            <input type="hidden" name="item-comment-parUserWriter" value="${ commentData.parUserWriter}">
+            <input type="hidden" name="item-comment-userNo" value="${ commentData.userNo}">
+            <input type="hidden" name="item-comment-userEmail" value="${ commentData.writer}">
+            <img class="img-circle img-bordered-sm" src="/images/profile_default.png" alt="user image">
+            <span class="username">
+                <a href="#" > ${ commentData.writer}</a>
+                <a href="#" class="float-right btn-tool"><i
+                    class="fas fa-ellipsis-v"></i></a>
+            </span>
+            <span class="pp-comment-content"> <span>${ commentData.content}</span> </span>
+            <span class="description  mt-2">
+                 <span >${ commentData.regDate}</span>
+                 <a href="javascript:void(0);" onclick="goCommentReplyEdit(this)"><span> 답글쓰기</span></a>
+            </div>
+        </li>`;
+
+        // $("ul.pp-ul-comment").prepend('<li><a href="/user/messages"><span class="tab">Message Center</span></a></li>');
+
+
+        $("ul.pp-ul-comment").append(html);
     }
 </script>
 

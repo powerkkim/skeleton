@@ -1,4 +1,4 @@
-package com.powernote.skeleton.vo;
+package com.powernote.skeleton.powernoteboard.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,15 +11,13 @@ import java.time.LocalDateTime;
 @Getter
 @ToString
 @NoArgsConstructor
-public class PostDataVo {
+public class PowerNoteCommentDataDto {
+    private Long commentNo = 0L;  // PK
     private Long postNo = 0L;
-
-    private String writer = "";
+    private Long commentGno = 0L;
+    private Long commentGord = 0L;
+    private Long commentDepth = 0L;
+    private Long parUserNo = 0L;
     private Long userNo = 0L;
-
-    private String title = "";
     private String content = "";
-    private int viewCnt = 0;
-    private LocalDateTime regDate;
-    private LocalDateTime uptDate;
 }

@@ -78,7 +78,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureHandler( new CustomLoginFailureHandler("/user/login") )
                 .and()
             .logout()             // 로그아웃시 어떻게 처리 할것이냐.
-                .logoutSuccessUrl("/login").permitAll()   // logout 이 되고 나서 가는 페이지 설정.
+                .logoutUrl("/user/logout").permitAll()
+                .logoutSuccessUrl("/main").permitAll()   // logout 이 되고 나서 가는 페이지 설정.
                 .invalidateHttpSession(true)  // session 정보를 지우고 무효화.
 //                .and()
 //            .exceptionHandling()  // Exception Handle 의 경우  필요한경우에만 설정

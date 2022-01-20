@@ -39,7 +39,7 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="ID-input-name">작성자</label>
-                                    <input type="name" name="board-email" class="form-control" id="ID-input-name" th:value="${#authentication.principal.email}" placeholder="Enter name" readonly>
+                                    <input type="name" name="board-email" class="form-control" id="ID-input-name" th:value="${#authentication.principal.username}" placeholder="Enter name" readonly>
                                     <input type="hidden" name="board-user-no" class="form-control" id="ID-input-user-no" th:value="${#authentication.principal.userNo}" >
                                 </div>
                                 <div class="form-group">
@@ -74,9 +74,8 @@
 
     function goPosting () {
         console.log("goPosting");
-        var PostDataVo = {
+        var PostDataDto = {
             postNo: $("input[name='postNo']").val(),
-            writer: $("input[name='board-email']").val(),
             userNo: $("input[name='board-user-no']").val(),
             title: $("input[name='board-subject']").val(),
             content: $("textarea[name='board-contents']").val(),
@@ -88,7 +87,7 @@
             },
             url: /*[[@{/api/board/update}]]*/ '/api/board/update',
             type: 'PUT',
-            data: JSON.stringify(PostDataVo),
+            data: JSON.stringify(PostDataDto),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             success: function onData (data) {

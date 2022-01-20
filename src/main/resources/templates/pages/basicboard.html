@@ -59,6 +59,7 @@
                                 </thead>
                                 <tbody>
                                 <tr id="idTableTr" th:each="item: ${pagesnav.getContent()}" th:object="${item}"  onclick="goView(this)">
+                                    <input type="hidden" name="post-user-no" th:value="*{userNo}"/>
                                     <td th:text="*{postNo}">No</td>
                                     <td th:text="*{writer}">writer</td>
                                     <td th:text="*{title}">title</td>
@@ -166,7 +167,7 @@
     }
 
     function goView( element ){
-        postNo = element.firstElementChild.textContent.trim();
+        postNo = $(element).find('td')[0].innerText.trim();
         page = $("input[name='pageNumber']").val();
         size = $("input[name='pageSize']").val();
 

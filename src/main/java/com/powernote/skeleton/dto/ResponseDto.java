@@ -1,13 +1,14 @@
 package com.powernote.skeleton.dto;
 
 import com.powernote.skeleton.exception.error.MessageType;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
 public class ResponseDto<T> {
-
     private String result = "0000";  // result code
     private String message = "";      //
     private T data;
@@ -18,26 +19,26 @@ public class ResponseDto<T> {
         this.data = null;
     }
 
-    public ResponseDto( MessageType result ) {
-        this.result = result.toString();
-        this.message = result.getMessage();
+    public ResponseDto( MessageType messageType ) {
+        this.result = messageType.toString();
+        this.message = messageType.getMessage();
         this.data = null;
     }
 
-    public ResponseDto( MessageType result, String message) {
-        this.result = result.toString();
+    public ResponseDto( MessageType messageType, String message) {
+        this.result = messageType.toString();
         this.message = message;
         this.data = null;
     }
 
-    public ResponseDto( MessageType result, T data) {
-        this.result = result.toString();
-        this.message = result.getMessage();;
+    public ResponseDto( MessageType messageType, T data) {
+        this.result = messageType.toString();
+        this.message = messageType.getMessage();;
         this.data = data;
     }
 
-    public ResponseDto( MessageType result,  String message, T data) {
-        this.result = result.toString();
+    public ResponseDto( String result,  String message, T data) {
+        this.result = result;
         this.message = message;
         this.data = data;
     }

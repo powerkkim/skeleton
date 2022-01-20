@@ -1,6 +1,7 @@
 package com.powernote.skeleton.mapper;
 
 import com.powernote.skeleton.dto.PageInfoDto;
+import com.powernote.skeleton.dto.PostDataDto;
 import com.powernote.skeleton.vo.PostDataVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.data.domain.Page;
@@ -11,7 +12,7 @@ import java.util.Map;
 @Mapper
 public interface BoardMapper {
 
-    void save(PostDataVo postDataVo);
+    void save(PostDataDto postData);
 
     List<PostDataVo> findAll();
 
@@ -23,9 +24,9 @@ public interface BoardMapper {
 
     PostDataVo findByPostId(String postNo);
 
-    int update(PostDataVo postDataVo);
+    int update(PostDataDto postData);
 
-    void delete(PostDataVo postDataVo);
+    void delete(PostDataDto postData);
 
     int updateViewCnt(String postNo);
 }

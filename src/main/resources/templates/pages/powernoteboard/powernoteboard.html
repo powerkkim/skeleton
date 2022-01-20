@@ -60,7 +60,7 @@
                                 <tbody>
                                 <tr id="idTableTr" th:each="item: ${pagesnav.getContent()}" th:object="${item}"  onclick="goView(this)">
                                     <td th:text="*{postNo}">No</td>
-                                    <td th:text="*{writer}">writer</td>
+                                    <td th:text="*{userName}">writer</td>
                                     <td th:text="*{title}">title</td>
                                     <td th:text="*{content}">content</td>
                                     <td th:text="*{uptDate}">등록일</td>
@@ -166,13 +166,13 @@
     }
 
     function goView( element ){
-        boarNo = element.firstElementChild.textContent.trim();
+        postNo = $(element).find('td')[0].innerText.trim();
         page = $("input[name='pageNumber']").val();
         size = $("input[name='pageSize']").val();
 
         let url = /*[[@{/powernoteboard/view?}]]*/ '/powernoteboard/view?';
         let paraMeter = makeParam(page, size);
-        let addParam = "&postNo=" + boarNo;
+        let addParam = "&postNo=" + postNo;
 
         let fullUrl = encodeURI(url+paraMeter+addParam);
 

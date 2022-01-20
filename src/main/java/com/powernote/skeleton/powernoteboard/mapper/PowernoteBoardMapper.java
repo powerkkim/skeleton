@@ -1,7 +1,6 @@
-package com.powernote.skeleton.mapper;
+package com.powernote.skeleton.powernoteboard.mapper;
 
-import com.powernote.skeleton.vo.PostDataVo;
-import com.powernote.skeleton.vo.PowerNotePostDataVo;
+import com.powernote.skeleton.powernoteboard.vo.PowerNotePostDataVo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

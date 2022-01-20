@@ -1,6 +1,7 @@
 package com.powernote.skeleton.controller.api;
 
 import com.powernote.skeleton.dto.PageInfoDto;
+import com.powernote.skeleton.dto.PostDataDto;
 import com.powernote.skeleton.dto.ResponseDto;
 import com.powernote.skeleton.exception.error.MessageType;
 import com.powernote.skeleton.service.BasicBoardService;
@@ -18,9 +19,9 @@ public class ApiBacisBoardController {
 
 
     @PostMapping("write")
-    public ResponseEntity c_boardWrite( @RequestBody PostDataVo postDataVo) {
+    public ResponseEntity c_boardWrite( @RequestBody PostDataDto postData) {
 
-        boardService.write(postDataVo);
+        boardService.write(postData);
 
         return ResponseEntity.ok( new ResponseDto(MessageType.OK) );
     }
@@ -36,14 +37,14 @@ public class ApiBacisBoardController {
     }
 
     @PutMapping("update")
-    public ResponseEntity u_update( @RequestBody PostDataVo postDataVo) {
-        boardService.update(postDataVo);
+    public ResponseEntity u_update( @RequestBody PostDataDto postData) {
+        boardService.update(postData);
         return ResponseEntity.ok( new ResponseDto(MessageType.OK) );
     }
 
     @DeleteMapping("delete")
-    public ResponseEntity d_update(PostDataVo postDataVo) {
-        boardService.delete(postDataVo);
+    public ResponseEntity d_update(PostDataDto postData) {
+        boardService.delete(postData);
         return ResponseEntity.ok( new ResponseDto(MessageType.OK) );
     }
 

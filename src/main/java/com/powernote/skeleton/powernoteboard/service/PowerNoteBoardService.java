@@ -3,11 +3,9 @@ package com.powernote.skeleton.powernoteboard.service;
 import com.powernote.skeleton.dto.PageInfoDto;
 import com.powernote.skeleton.exception.basic.BaseException;
 import com.powernote.skeleton.exception.error.MessageType;
-import com.powernote.skeleton.mapper.BoardMapper;
-import com.powernote.skeleton.mapper.PowernoteBoardMapper;
+import com.powernote.skeleton.powernoteboard.mapper.PowernoteBoardMapper;
 import com.powernote.skeleton.security.vo.CustomUserDetails;
-import com.powernote.skeleton.vo.PostDataVo;
-import com.powernote.skeleton.vo.PowerNotePostDataVo;
+import com.powernote.skeleton.powernoteboard.vo.PowerNotePostDataVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -98,8 +96,8 @@ public class PowerNoteBoardService {
         return dtoPages;
     }
 
-    public PostDataVo findByPostId(String postNo) {
-        PostDataVo postDataVo = boardMapper.findByPostId(postNo);
+    public PowerNotePostDataVo findByPostId(String postNo) {
+        PowerNotePostDataVo postDataVo = boardMapper.findByPostId(postNo);
         return postDataVo;
     }
 

@@ -1,9 +1,10 @@
 package com.powernote.skeleton.powernoteboard.controller;
 
 import com.powernote.skeleton.dto.PageInfoDto;
+import com.powernote.skeleton.powernoteboard.service.PowerNoteBoardCommentService;
 import com.powernote.skeleton.powernoteboard.service.PowerNoteBoardService;
-import com.powernote.skeleton.vo.PostDataVo;
-import com.powernote.skeleton.vo.PowerNotePostDataVo;
+import com.powernote.skeleton.powernoteboard.vo.PowerNoteCommentDataVo;
+import com.powernote.skeleton.powernoteboard.vo.PowerNotePostDataVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -27,6 +29,9 @@ public class PowerNoteBoardController {
 
     @Autowired
     PowerNoteBoardService boardService;
+
+    @Autowired
+    PowerNoteBoardCommentService boardCommentService;
 
     @GetMapping(value = "/main")
     public String board(Model model, PageInfoDto rPageInfo) {
@@ -66,17 +71,20 @@ public class PowerNoteBoardController {
             if( nUpCnt <= 0 ) log.info( "updateViewCnt no update: {}", nUpCnt );
         }
 
-        PostDataVo postDataVo = boardService.findByPostId(postNo);
+        PowerNotePostDataVo postDataVo = boardService.findByPostId(postNo);
+        List<PowerNoteCommentDataVo> commentList = boardCommentService.findCommentByPostId(postNo);
 
         model.addAttribute("postData", postDataVo);
         model.addAttribute("pageInfo", rPageInfo);
+        model.addAttribute("commentList", commentList);
+
         return "pages/powernoteboard/powernoteboard_view";
     }
 
     @GetMapping(value = "/edit")
     public String edit(Model model, @RequestParam(value = "postNo") String postNo ) {
 
-        PostDataVo postDataVo = boardService.findByPostId(postNo);
+        PowerNotePostDataVo postDataVo = boardService.findByPostId(postNo);
         model.addAttribute("postData", postDataVo);
 
         return "pages/powernoteboard/powernoteboard_editor_form";

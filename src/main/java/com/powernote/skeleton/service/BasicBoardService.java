@@ -1,6 +1,7 @@
 package com.powernote.skeleton.service;
 
 import com.powernote.skeleton.dto.PageInfoDto;
+import com.powernote.skeleton.dto.PostDataDto;
 import com.powernote.skeleton.exception.basic.BaseException;
 import com.powernote.skeleton.exception.error.MessageType;
 import com.powernote.skeleton.mapper.BoardMapper;
@@ -32,7 +33,7 @@ public class BasicBoardService {
     BoardMapper boardMapper;
 
     @Transactional
-    public void write(PostDataVo postDataVo) {
+    public void write(PostDataDto postData) {
         Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
 
         // 비로그인 접근
@@ -49,15 +50,15 @@ public class BasicBoardService {
 
         log.info("username: "+ user.getUsername() );
         log.info("getNickname: "+ user.getNickname() );
-        log.info("postDataVo: "+ postDataVo.toString());
+        log.info("postDataVo: "+ postData.toString());
 
 //        postDataVo.
 
-        if ( user.getUserNo() != postDataVo.getUserNo() ) {
+        if ( user.getUserNo() != postData.getUserNo() ) {
             throw new BaseException("", MessageType.ERROR_LOGIN_001.toString(), HttpStatus.OK);
         }
 
-        boardMapper.save(postDataVo);
+        boardMapper.save(postData);
     }
 
     public Page<PostDataVo> read( PageInfoDto rPageInfo ) {
@@ -99,7 +100,7 @@ public class BasicBoardService {
     }
 
     @Transactional
-    public int update(PostDataVo postDataVo) {
+    public int update(PostDataDto postData) {
         Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
 
         // 비로그인 접근
@@ -116,20 +117,20 @@ public class BasicBoardService {
 
         log.info("username: "+ user.getUsername() );
         log.info("getNickname: "+ user.getNickname() );
-        log.info("postDataVo: "+ postDataVo.toString());
+        log.info("postDataVo: "+ postData.toString());
 
-        if ( user.getUserNo() != postDataVo.getUserNo() ) {
+        if ( user.getUserNo() != postData.getUserNo() ) {
             throw new BaseException("", MessageType.ERROR_LOGIN_001.toString(), HttpStatus.OK);
         }
 
-        int bResult = boardMapper.update(postDataVo);
+        int bResult = boardMapper.update(postData);
 
         log.info("postDataVo: DB update" );
         return bResult;
     }
 
-    public void delete(PostDataVo postDataVo) {
-        boardMapper.delete(postDataVo);
+    public void delete(PostDataDto postData) {
+        boardMapper.delete(postData);
     }
 
     @Transactional

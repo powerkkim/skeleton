@@ -1,0 +1,93 @@
+@charset "utf-8";
+
+.user-block {
+    margin-bottom: 5px;
+    width: 100%;
+    float: left;
+}
+
+.pp-ul-comment {
+    padding: 0;
+}
+
+.pp-li-comment {
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+.pp-li-comment-reply {
+    padding-left: 0;
+    margin-left: 46px;
+}
+
+.pp-comment-content {
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: -1px;
+    display: block;
+    margin-left: 50px;
+}
+
+.pp-comment-write-area {
+    margin: 12px 0 29px;
+    padding: 16px 10px 10px 18px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    box-sizing: border-box;
+    background: #ffffff;
+    width: 100%;
+}
+
+.pp-comment-write-infobox {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.pp-comment-attach-tool {
+    position: relative;
+    padding-top: 10px;
+    width: 100%;
+}
+
+.pp-font-size17 {
+    font-size: 17px;
+}
+
+.pp-font-size13 {
+    font-size: 13px;
+}
+
+.pp-font-size12 {
+    font-size: 12px;
+}
+
+.pp-font-bold {
+    font-weight: bold;
+}
+
+.pp-textarea-autosize {
+    width: 100%;
+    min-height: 17px;
+    max-height: 500px;
+    /*overflow: hidden;*/
+    overflow-wrap: break-word;
+    border: 0;
+    /*background: #9fcdff;*/
+    font-size: 13px;
+    resize: none;
+    box-sizing: border-box;
+    padding: 0 1px 0 0;
+    line-height: 1.2;
+
+}
+
+.pp-textarea-autosize:focus-visible {
+    outline-offset: 0px;
+    outline-color: #ffffff00;
+}
+
+

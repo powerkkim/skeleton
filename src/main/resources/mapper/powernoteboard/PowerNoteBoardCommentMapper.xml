@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+
+<mapper namespace="com.powernote.skeleton.powernoteboard.mapper.PowernoteBoardCommentMapper">
+
+    <insert id="save" parameterType="com.powernote.skeleton.powernoteboard.dto.PowerNoteCommentDataDto">
+        <selectKey resultType="long" keyProperty="commentNo" order="BEFORE">
+            SELECT TB_POWEWRNOTEBOARD_COMMENT_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+
+        insert into TB_POWEWRNOTEBOARD_COMMENT ( COMMENT_NO, POST_NO, COMMENT_GNO, COMMENT_GORD, COMMENT_DEPTH, PAR_USER_NO, USER_NO, CONTENT,  REG_DATE, UPT_DATE )
+        values (
+            #{commentNo},
+            #{postNo},
+            <choose>
+                <!-- 새댓글 -->
+                <when test="commentGno == -1 and commentGord == 0 and commentDepth == 0" >  ( SELECT NVL(MAX(COMMENT_GNO+1),1) FROM TB_POWEWRNOTEBOARD_COMMENT where post_no = #{postNo}), </when>
+                <!-- 대댓글  -->
+                <otherwise>#{commentGno},</otherwise>
+            </choose>
+            <choose>
+                <!-- 대댓글 -->
+                <when test="commentGno > 0" > ( SELECT NVL(MAX(COMMENT_GORD+1),1) FROM TB_POWEWRNOTEBOARD_COMMENT where POST_NO = #{postNo} and COMMENT_GNO = #{commentGno}), </when>
+                <otherwise>#{commentGord},</otherwise>
+            </choose>
+            #{commentDepth},
+            #{parUserNo},
+            #{userNo},
+            #{content},
+            SYSDATE,
+            SYSDATE
+        )
+    </insert>
+
+    <select id="findCommentByCommentId" parameterType="String" resultType="com.powernote.skeleton.powernoteboard.vo.PowerNoteCommentDataVo">
+        SELECT COMMENT_NO, POST_NO, COMMENT_GNO, COMMENT_GORD, COMMENT_DEPTH, PAR_USER_NO, PAR.USER_NAME as PAR_USER_WRITER,
+        PC.USER_NO, TU.USER_NAME as WRITER, CONTENT, PC.REG_DATE, PC.UPT_DATE
+        FROM TB_POWEWRNOTEBOARD_COMMENT PC
+            INNER JOIN TB_USER TU on PC.USER_NO = TU.USER_NO
+            INNER JOIN TB_USER PAR on PC.PAR_USER_NO = PAR.USER_NO
+        WHERE COMMENT_NO = #{commentNo}
+    </select>
+
+    <select id="findCommentLastCommentGNoByPostId" parameterType="String" resultType="long">
+        SELECT NVL(max(COMMENT_GNO+1), 1) FROM TB_POWEWRNOTEBOARD_COMMENT
+        WHERE POST_NO = #{postNo}
+        ORDER BY COMMENT_GNO ASC
+    </select>
+
+    <select id="findCommentByPostId" parameterType="String" resultType="com.powernote.skeleton.powernoteboard.vo.PowerNoteCommentDataVo">
+        SELECT COMMENT_NO, POST_NO, COMMENT_GNO, COMMENT_GORD, COMMENT_DEPTH, PAR_USER_NO, PAR.USER_NAME as PAR_USER_WRITER,
+        PC.USER_NO, TU.USER_NAME as WRITER, CONTENT, PC.REG_DATE, PC.UPT_DATE
+        FROM TB_POWEWRNOTEBOARD_COMMENT PC
+            INNER JOIN TB_USER TU on PC.USER_NO = TU.USER_NO
+            INNER JOIN TB_USER PAR on PC.PAR_USER_NO = PAR.USER_NO
+        WHERE POST_NO = #{postNo}
+        ORDER by COMMENT_GNO, COMMENT_GORD
+    </select>
+
+
+</mapper>
