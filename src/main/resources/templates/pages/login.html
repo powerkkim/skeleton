@@ -35,7 +35,7 @@
         <div class="row">
           <div class="col-8">
             <div class="icheck-primary">
-              <input type="checkbox" id="remember">
+              <input type="checkbox" id="remember" name="remember-me">
               <label for="remember">
                 Remember Me
               </label>
@@ -81,15 +81,17 @@
 
   function logIn () {
     var UserVo = {
-        userid: $("input[name='userid']").val(),
-        password: $("input[name='passwd']").val(),
+        "userid": $("input[name='userid']").val(),
+        "password": $("input[name='passwd']").val(),
+        "remember-me": $("input[name='remember-me']").is(':checked'),
     };
 
+    console.log( UserVo );
     $.ajax({
       beforeSend: function (xhr) {
         xhr.setRequestHeader("isAjaxLogin","true");
       },
-      url: /*[[@{/j_spring_security_check}]]*/ '/j_spring_security_check',
+      url: /*[[@{/loginproc}]]*/ '/loginproc',
       type: 'POST',
       data: UserVo,
       dataType: 'json',

@@ -33,6 +33,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public CustomUserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
 
+        log.info( "loadUserByUsername {}" , userId );
+
         UserVo user = userMapper.findById(userId);
 
         CustomUserDetails userDetails = Optional.ofNullable(user)
@@ -41,8 +43,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
                     CustomUserDetails detail = new CustomUserDetails(
                             user.getEmail(),
-                            user.getUserName(),
                             user.getPasswd(),
+                            user.getUserName(),
                             user.getUserNo(),
                             user.getNickName(),
                             getAuthorities(user.getRoles()),

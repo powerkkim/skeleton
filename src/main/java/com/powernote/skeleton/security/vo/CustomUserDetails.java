@@ -27,24 +27,26 @@ public class CustomUserDetails implements UserDetails, CredentialsContainer {
 
     private final long userNo;
     private String nickname;
-    private final String email;
+    private final String name;
 
     private final boolean accountNonExpired;
     private final boolean accountNonLocked;
     private final boolean credentialsNonExpired;
     private final boolean enabled;
 
-    public CustomUserDetails(String email,
+    public CustomUserDetails(
                              String username,
                              String password,
+                             String name,
                              long userNo,
                              String nickname,
                              Collection<? extends GrantedAuthority> authorities,
                              boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked
                 ) {
-        this.email = email;
+
         this.username = username;
         this.password = password;
+        this.name = name;
         this.userNo = userNo;
         this.nickname = nickname;
         this.authorities = Collections.unmodifiableSet(sortAuthorities(authorities));

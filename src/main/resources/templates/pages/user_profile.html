@@ -52,19 +52,21 @@
       <div sec:authentication="name"></div>
       <br>
 
+      <!--인증시 사용된 객체의 Username (ID)-->
+      <b>Authenticated email:</b>
+      <div sec:authentication="principal.username"></div>
+      <br>
+
       <!--객체의 권한-->
       <b>Authenticated user role:</b>
       <div sec:authentication="principal.authorities"></div>
 
 
-      <!--인증시 사용된 객체의 Username (ID)-->
-      <b>Authenticated username:</b>
-      <div sec:authentication="principal.username"></div>
+
+      <b>Authenticated name:</b>
+      <div sec:authentication="principal.name"></div>
       <br>
-      <!--인증시 사용된 객체의 Username (ID)-->
-      <b>Authenticated email:</b>
-      <div sec:authentication="principal.email"></div>
-      <br>
+
       <!--인증시 사용된 객체의 Username (ID)-->
       <b>Authenticated userNo:</b>
       <div sec:authentication="principal.userNo"></div>

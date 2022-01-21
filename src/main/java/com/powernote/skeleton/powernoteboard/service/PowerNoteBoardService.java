@@ -44,11 +44,11 @@ public class PowerNoteBoardService {
         CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
 
         log.info("authentication.getName(): "+ authentication.getName() );
+        log.info("getEmail: "+ user.getUsername() );
         log.info("getUserNo: "+ user.getUserNo() );
-        log.info("getEmail: "+ user.getEmail() );
         log.info("password: "+ user.getPassword() );
 
-        log.info("username: "+ user.getUsername() );
+        log.info("username: "+ user.getName() );
         log.info("getNickname: "+ user.getNickname() );
         log.info("postDataVo: "+ postData.toString());
 
@@ -114,11 +114,11 @@ public class PowerNoteBoardService {
         CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
 
         log.info("authentication.getName(): "+ authentication.getName() );
+        log.info("getEmail: "+ user.getUsername() );
         log.info("getUserNo: "+ user.getUserNo() );
-        log.info("getEmail: "+ user.getEmail() );
         log.info("password: "+ user.getPassword() );
 
-        log.info("username: "+ user.getUsername() );
+        log.info("username: "+ user.getName());
         log.info("getNickname: "+ user.getNickname() );
         log.info("postDataVo: "+ postData.toString());
 
