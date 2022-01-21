@@ -8,6 +8,7 @@ import com.powernote.skeleton.security.handler.CustomLoginSuccessHandler;
 import com.powernote.skeleton.security.service.UserDetailsServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -18,6 +19,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+import javax.sql.DataSource;
 
 @Slf4j
 @Configuration
@@ -31,6 +36,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     UserDetailsServiceImpl userDetailsService;
+
+    @Autowired
+    @Qualifier("myDataSource")
+    DataSource dataSource;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -86,7 +95,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/user/logout").permitAll()
                 .logoutSuccessUrl("/main").permitAll()   // logout 이 되고 나서 가는 페이지 설정.
                 .invalidateHttpSession(true)  // session 정보를 지우고 무효화.
-                .deleteCookies("JSESSIONID", "remember-me")
+                .deleteCookies("JSESSIONID", "autologin")
                 .and()
             .rememberMe()
                 .key("uniqueKey")
@@ -94,7 +103,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMeParameter("remember-me")
                 .rememberMeCookieName("autologin")
                 .tokenValiditySeconds( 60*60*24 * 14 ) // 14일
-//                .authenticationSuccessHandler( new CustomLoginSuccessHandler("/main") )
+                .authenticationSuccessHandler( new CustomLoginSuccessHandler("/main") )
+                .tokenRepository(tokenRepository())
+
         ;
 //                .and()
 //            .exceptionHandling()  // Exception Handle 의 경우  필요한경우에만 설정
@@ -105,5 +116,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
             ;
     }
+
+    @Bean
+    public PersistentTokenRepository tokenRepository() {
+        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+        jdbcTokenRepository.setDataSource(dataSource);
+        return jdbcTokenRepository;
+    }
+
 
 }
