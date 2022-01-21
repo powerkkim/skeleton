@@ -13,10 +13,16 @@ import java.time.LocalDateTime;
 @Getter
 @ToString
 @NoArgsConstructor
-public class PowerNotePostDataVo extends PostDataVo {
+public class PowerNotePostDataVo {
 
-    private String userName = "";
-    private String email = "";
-    private int boardNo = 0;
+    private Long postNo = 0L;
+    private String title = "";
+    private String content = "";
+    private int viewCnt = 0;
+
+    private LocalDateTime regDate;
+    private LocalDateTime uptDate;
+
     private String categoryName = "기본";
+    private UserVo user;
 }

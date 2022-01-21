@@ -1,5 +1,6 @@
 package com.powernote.skeleton.powernoteboard.mapper;
 
+import com.powernote.skeleton.powernoteboard.dto.PowerNotePostDataDto;
 import com.powernote.skeleton.powernoteboard.vo.PowerNotePostDataVo;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -9,7 +10,7 @@ import java.util.Map;
 @Mapper
 public interface PowernoteBoardMapper {
 
-    void save(PowerNotePostDataVo postDataVo);
+    void save(PowerNotePostDataDto postDataVo);
 
     List<PowerNotePostDataVo> findAll();
 
@@ -21,9 +22,9 @@ public interface PowernoteBoardMapper {
 
     PowerNotePostDataVo findByPostId(String postNo);
 
-    int update(PowerNotePostDataVo postDataVo);
+    int update(PowerNotePostDataDto postDataVo);
 
-    void delete(PowerNotePostDataVo postDataVo);
+    void delete(PowerNotePostDataDto postDataVo);
 
     int updateViewCnt(String postNo);
 }

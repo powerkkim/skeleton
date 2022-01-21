@@ -44,9 +44,9 @@
                             <div class="row">
                                 <div class="col-7">
                                     <div class="user-block">
-                                        <img class="img-circle img-bordered-sm" th:src="@{/images/profile_default.png}" alt="user image">
+                                        <img class="img-circle img-bordered-sm" th:src="${postData.user.getProfileImg()}" alt="user image">
                                         <span class="username">
-                                          <a href="#" th:text="${postData.getUserName()}">Jonathan Burke Jr.</a>
+                                          <a href="#" th:text="${postData.user.getUserName()}">Jonathan Burke Jr.</a>
                                         </span>
                                         <span class="description"><span th:text="${postData.getUptDate()}">7:30 PM today</span>   조회: <span th:text="${postData.getViewCnt()}">0</span> </span>
                                     </div>
@@ -68,7 +68,7 @@
                                 <a href="#" class="link-black text-sm"><i class="far fa-thumbs-up mr-1"></i> Like</a>
                                 <span class="float-right">
                                   <a href="#" class="link-black text-sm">
-                                    <i class="far fa-comments mr-1"></i> Comments (5)
+                                      <i class="far fa-comments mr-1"></i> Comments ( <span th:text="${#lists.size(commentList)}">0</span> )
                                   </a>
                                 </span>
                             </div>
@@ -87,22 +87,22 @@
                                             <input type="hidden" name="item-comment-gno" th:value="*{commentGno}" >
                                             <input type="hidden" name="item-comment-gord" th:value="*{commentGord}" >
                                             <input type="hidden" name="item-comment-depth" th:value="*{commentDepth}" >
-                                            <input type="hidden" name="item-comment-parUserNo" th:value="*{parUserNo}">
-                                            <input type="hidden" name="item-comment-parUserWriter" th:value="*{parUserWriter}" >
-                                            <input type="hidden" name="item-comment-userNo" th:value="*{userNo}" >
-                                            <input type="hidden" name="item-comment-userEmail" th:value="*{writer}" >
+                                            <input type="hidden" name="item-comment-parUserNo" th:value="*{parUser.getUserNo()}">
+                                            <input type="hidden" name="item-comment-parUserWriter" th:value="*{parUser.getUserName()}" >
+                                            <input type="hidden" name="item-comment-userNo" th:value="*{user.getUserNo()}" >
+                                            <input type="hidden" name="item-comment-userEmail" th:value="*{user.getEmail()}" >
 
-                                            <img class="img-circle img-bordered-sm" th:src="@{/images/profile_default.png}" alt="user image">
+                                            <img class="img-circle img-bordered-sm" th:src="*{user.getProfileImg()}" alt="user image">
                                             <span class="username">
-                                                <a href="#" th:text="*{writer}">name</a>
+                                                <a href="#" th:text="*{user.getUserName()}">name</a>
                                                 <a href="#" class="float-right btn-tool"><i class="fas fa-ellipsis-v"></i></a>
                                             </span>
                                             <span  class="pp-comment-content">
-                                                <span th:if="*{parUserWriter != ' ' and commentDepth >= 2}" th:text="*{parUserWriter}" class="mr-3">댓글자: </span>
+                                                <span th:if="*{parUser != '' and parUser.getUserName() != '' and commentDepth >= 2}" th:text="*{parUser.getUserName()}" class="mr-3">댓글자: </span>
                                                 <span th:text="*{content}"></span>
                                             </span>
                                             <span class="description  mt-2" >
-                                                 <span th:text="*{regDate}">2022-01-19T05:00:43</span>
+                                                 <span th:text="*{uptDate}">2022-01-19T05:00:43</span>
                                                  <a href="javascript:void(0);" onclick="goCommentReplyEdit(this)"><span> 답글쓰기</span></a>
                                             </span>
                                         </div>
@@ -116,8 +116,8 @@
                                             <input type="hidden" name="post-comment-gno" id="post-comment-gno" th:value="-1" >
                                             <input type="hidden" name="post-comment-gord" id="post-comment-gord" th:value="0" >
                                             <input type="hidden" name="post-comment-depth" id="post-comment-depth" th:value="0" >
-                                            <input type="hidden" name="post-comment-parUserNo" id="post-comment-parUserNo" th:value="${postData.getUserNo()}">
-                                            <input type="hidden" name="post-comment-parUserWriter" id="post-comment-parUserWriter" th:value="${postData.getWriter()}" >
+                                            <input type="hidden" name="post-comment-parUserNo" id="post-comment-parUserNo" th:value="${postData.getUser().getUserNo()}">
+                                            <input type="hidden" name="post-comment-parUserWriter" id="post-comment-parUserWriter" th:value="${postData.getUser().getUserName()}" >
                                             <input type="hidden" name="post-comment-userNo" id="post-comment-userNo" th:value="${#authentication.principal.userNo}" >
                                             <input type="hidden" name="post-comment-userEmail" id="post-comment-userEmail" th:value="${#authentication.principal.email}" >
                                             <input type="hidden" name="post-comment-username" id="post-comment-username" th:value="${#authentication.principal.username}" >
@@ -362,7 +362,7 @@
     }
 
     function funAddCommentReply( commentData ) {
-        console.log( commentData);
+        console.log(  commentData  );
         if( $('#reply-edit-area').length > 0 ) {
             $('#reply-edit-area').remove();
         }
@@ -376,27 +376,27 @@
             <input type="hidden" name="item-comment-gno" value="${ commentData.commentGno}">
             <input type="hidden" name="item-comment-gord" value="${ commentData.commentGord}">
             <input type="hidden" name="item-comment-depth" value="${ commentData.commentDepth}">
-            <input type="hidden" name="item-comment-parUserNo" value="${ commentData.parUserNo}">
-            <input type="hidden" name="item-comment-parUserWriter" value="${ commentData.parUserWriter}">
-            <input type="hidden" name="item-comment-userNo" value="${ commentData.userNo}">
-            <input type="hidden" name="item-comment-userEmail" value="${ commentData.writer}">
+            <input type="hidden" name="item-comment-parUserNo" value="${ commentData.parUser.userNo}">
+            <input type="hidden" name="item-comment-parUserWriter" value="${ commentData.parUser.userName}">
+            <input type="hidden" name="item-comment-userNo" value="${ commentData.user.userNo}">
+            <input type="hidden" name="item-comment-userEmail" value="${ commentData.user.email}">
             <img class="img-circle img-bordered-sm" src="/images/profile_default.png" alt="user image">
             <span class="username">
-                <a href="#" > ${ commentData.writer}</a>
+                <a href="#" > ${ commentData.user.userName }</a>
                 <a href="#" class="float-right btn-tool"><i
                     class="fas fa-ellipsis-v"></i></a>
             </span>
 
             <span class="pp-comment-content">
-                ${ (commentData.parUserWriter != ' ' && commentData.commentDepth >=2) ?
-                    '<span class="mr-3">' + commentData.parUserWriter + '</span>'
+                ${ (commentData.parUser != '' && commentData.commentDepth >=2) ?
+                    '<span class="mr-3">' + commentData.parUser.userName + '</span>'
                 :
                     ''
                 }
                 <span>${ commentData.content}</span>
             </span>
             <span class="description  mt-2">
-                 <span >${ commentData.regDate}</span>
+                 <span >${ commentData.uptDate}</span>
                  <a href="javascript:void(0);" onclick="goCommentReplyEdit(this)"><span> 답글쓰기</span></a>
             </div>
         </li>`;
@@ -413,19 +413,27 @@
             <input type="hidden" name="item-comment-gno" value="${ commentData.commentGno}">
             <input type="hidden" name="item-comment-gord" value="${ commentData.commentGord}">
             <input type="hidden" name="item-comment-depth" value="${ commentData.commentDepth}">
-            <input type="hidden" name="item-comment-parUserNo" value="${ commentData.parUserNo}">
-            <input type="hidden" name="item-comment-parUserWriter" value="${ commentData.parUserWriter}">
-            <input type="hidden" name="item-comment-userNo" value="${ commentData.userNo}">
-            <input type="hidden" name="item-comment-userEmail" value="${ commentData.writer}">
+            <input type="hidden" name="item-comment-parUserNo" value="${ commentData.parUser.userNo}">
+            <input type="hidden" name="item-comment-parUserWriter" value="${ commentData.parUser.userName}">
+            <input type="hidden" name="item-comment-userNo" value="${ commentData.user.userNo}">
+            <input type="hidden" name="item-comment-userEmail" value="${ commentData.user.email}">
             <img class="img-circle img-bordered-sm" src="/images/profile_default.png" alt="user image">
             <span class="username">
-                <a href="#" > ${ commentData.writer}</a>
+                <a href="#" > ${ commentData.user.userName }</a>
                 <a href="#" class="float-right btn-tool"><i
                     class="fas fa-ellipsis-v"></i></a>
             </span>
-            <span class="pp-comment-content"> <span>${ commentData.content}</span> </span>
+
+            <span class="pp-comment-content">
+                ${ (commentData.parUser != '' && commentData.commentDepth >=2) ?
+            '<span class="mr-3">' + commentData.parUser.userName + '</span>'
+            :
+            ''
+        }
+                <span>${ commentData.content}</span>
+            </span>
             <span class="description  mt-2">
-                 <span >${ commentData.regDate}</span>
+                 <span >${ commentData.uptDate}</span>
                  <a href="javascript:void(0);" onclick="goCommentReplyEdit(this)"><span> 답글쓰기</span></a>
             </div>
         </li>`;

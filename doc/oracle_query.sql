@@ -5,6 +5,7 @@ CREATE TABLE "TB_USER" (
                            "PASSWD" VARCHAR(100) NOT NULL,
                            "USER_NAME" VARCHAR(100) ,
                            "NICK_NAME" VARCHAR(100) ,
+                           "PROFILE_IMG" VARCHAR(100) ,
                            "TEL_NUMBER" VARCHAR(20) DEFAULT '',
                            "ROLES" VARCHAR(16) NOT NULL,
                            "REG_DATE" DATE NOT NULL,
@@ -22,6 +23,7 @@ COMMENT ON COLUMN "TB_USER"."EMAIL" IS '이메일';
 COMMENT ON COLUMN "TB_USER"."PASSWD" IS '비밀번호';
 COMMENT ON COLUMN "TB_USER"."USER_NAME" IS '회원이름';
 COMMENT ON COLUMN "TB_USER"."NICK_NAME" IS '닉네임';
+COMMENT ON COLUMN "TB_USER"."PROFILE_IMG" IS '프로필 이미지';
 COMMENT ON COLUMN "TB_USER"."TEL_NUMBER" IS '전화번호';
 COMMENT ON COLUMN "TB_USER"."ROLES" IS '사용자 권한';
 COMMENT ON COLUMN "TB_USER"."REG_DATE" IS '등록일시';
@@ -60,7 +62,7 @@ CREATE SEQUENCE "TB_BOARD_POST_SEQ"  MINVALUE 1 MAXVALUE 999999999999 INCREMENT 
 --------- PowerNote 게시판 Table
 CREATE TABLE "TB_POWEWRNOTEBOARD_POST" (
                             "POST_NO" NUMBER(12) NOT NULL,
-                            "BOARD_NO" NUMBER(4) default 0,
+--                             "BOARD_NO" NUMBER(4) default 0,
 --                             "CATEGORY_CD" VARCHAR(4) default '0000',
                             "CATEGORY_NAME" VARCHAR(20) default '기본',
                             "TITLE" VARCHAR(100) NOT NULL,

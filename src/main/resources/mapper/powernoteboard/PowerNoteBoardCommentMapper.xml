@@ -32,9 +32,34 @@
         )
     </insert>
 
-    <select id="findCommentByCommentId" parameterType="String" resultType="com.powernote.skeleton.powernoteboard.vo.PowerNoteCommentDataVo">
-        SELECT COMMENT_NO, POST_NO, COMMENT_GNO, COMMENT_GORD, COMMENT_DEPTH, PAR_USER_NO, PAR.USER_NAME as PAR_USER_WRITER,
-        PC.USER_NO, TU.USER_NAME as WRITER, CONTENT, PC.REG_DATE, PC.UPT_DATE
+    <resultMap id="powernotePostCommentResult" type="com.powernote.skeleton.powernoteboard.vo.PowerNoteCommentDataVo">
+        <id property="commentNo" column="COMMENT_NO" />
+        <result property="postNo" column="POST_NO"/>
+        <result property="commentGno" column="COMMENT_GNO"/>
+        <result property="commentGord" column="COMMENT_GORD"/>
+        <result property="commentDepth" column="COMMENT_DEPTH"/>
+        <result property="content" column="CONTENT"/>
+        <result property="uptDate" column="UPT_DATE"/>
+        <association property="user" javaType="com.powernote.skeleton.vo.UserVo">
+            <id property="userNo" column="USER_NO"/>
+            <result property="email" column="EMAIL"/>
+            <result property="userName" column="USER_NAME"/>
+            <result property="nickName" column="NICK_NAME"/>
+            <result property="profileImg" column="PROFILE_IMG"/>
+            <result property="roles" column="ROLES"/>
+        </association>
+        <association property="parUser" javaType="com.powernote.skeleton.vo.UserVo">
+            <id property="userNo" column="USER_NO"/>
+            <result property="email" column="EMAIL"/>
+            <result property="userName" column="USER_NAME"/>
+            <result property="nickName" column="NICK_NAME"/>
+            <result property="profileImg" column="PROFILE_IMG"/>
+            <result property="roles" column="ROLES"/>
+        </association>
+    </resultMap>
+
+    <select id="findCommentByCommentId" parameterType="String" resultMap="powernotePostCommentResult">
+        SELECT *
         FROM TB_POWEWRNOTEBOARD_COMMENT PC
             INNER JOIN TB_USER TU on PC.USER_NO = TU.USER_NO
             INNER JOIN TB_USER PAR on PC.PAR_USER_NO = PAR.USER_NO
@@ -47,9 +72,8 @@
         ORDER BY COMMENT_GNO ASC
     </select>
 
-    <select id="findCommentByPostId" parameterType="String" resultType="com.powernote.skeleton.powernoteboard.vo.PowerNoteCommentDataVo">
-        SELECT COMMENT_NO, POST_NO, COMMENT_GNO, COMMENT_GORD, COMMENT_DEPTH, PAR_USER_NO, PAR.USER_NAME as PAR_USER_WRITER,
-        PC.USER_NO, TU.USER_NAME as WRITER, CONTENT, PC.REG_DATE, PC.UPT_DATE
+    <select id="findCommentByPostId" parameterType="String" resultMap="powernotePostCommentResult">
+        SELECT *
         FROM TB_POWEWRNOTEBOARD_COMMENT PC
             INNER JOIN TB_USER TU on PC.USER_NO = TU.USER_NO
             INNER JOIN TB_USER PAR on PC.PAR_USER_NO = PAR.USER_NO

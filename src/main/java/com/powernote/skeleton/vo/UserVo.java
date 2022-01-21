@@ -13,14 +13,15 @@ import java.time.LocalDateTime;
 @Getter
 public class UserVo {
     private Long userNo = 0L;
+    private String userId = "";
     private String email = "";
     private String passwd = "";
     private String userName = "";
     private String nickName = "";
+    private String profileImg = "";
     private String telNumber = "";
     private String roles = "";
     private LocalDateTime regDate;
     private LocalDateTime uptDate;
     private LocalDateTime passwdresetDate;
-
 }

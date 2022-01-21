@@ -3,6 +3,7 @@ package com.powernote.skeleton.powernoteboard.controller.api;
 import com.powernote.skeleton.dto.PageInfoDto;
 import com.powernote.skeleton.dto.ResponseDto;
 import com.powernote.skeleton.exception.error.MessageType;
+import com.powernote.skeleton.powernoteboard.dto.PowerNotePostDataDto;
 import com.powernote.skeleton.powernoteboard.service.PowerNoteBoardService;
 import com.powernote.skeleton.powernoteboard.vo.PowerNotePostDataVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,8 @@ public class ApiPowerNoteBoardController {
 
 
     @PostMapping("write")
-    public ResponseEntity c_boardWrite( @RequestBody PowerNotePostDataVo postDataVo) {
-        boardService.write(postDataVo);
+    public ResponseEntity c_boardWrite( @RequestBody PowerNotePostDataDto postData) {
+        boardService.write(postData);
         return ResponseEntity.ok( new ResponseDto(MessageType.OK) );
     }
 
@@ -34,14 +35,14 @@ public class ApiPowerNoteBoardController {
     }
 
     @PutMapping("update")
-    public ResponseEntity u_update( @RequestBody PowerNotePostDataVo postDataVo) {
-        boardService.update(postDataVo);
+    public ResponseEntity u_update( @RequestBody PowerNotePostDataDto postData) {
+        boardService.update(postData);
         return ResponseEntity.ok( new ResponseDto(MessageType.OK) );
     }
 
     @DeleteMapping("delete")
-    public ResponseEntity d_update(PowerNotePostDataVo postDataVo) {
-        boardService.delete(postDataVo);
+    public ResponseEntity d_update(PowerNotePostDataDto postData ) {
+        boardService.delete(postData);
         return ResponseEntity.ok( new ResponseDto(MessageType.OK) );
     }
 

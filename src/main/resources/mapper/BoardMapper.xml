@@ -18,7 +18,7 @@
 <!--        oracle 12 이후 -->
         SELECT POST_NO, TITLE, CONTENT, TU.USER_NAME as WRITER, PO.USER_NO, VIEW_CNT, PO.REG_DATE, PO.UPT_DATE
         FROM TB_BOARD_POST PO
-            INNER JOIN TB_USER TU on PO.USER_NO = TU.USER_NO
+            LEFT JOIN TB_USER TU on PO.USER_NO = TU.USER_NO
         <where>
 <!--            <if test="title != null">title like  ('%'||#{title}||'%')</if>-->
 <!--            <if test="content != null">AND content like ('%'||#{content}||'%')</if>-->
@@ -41,7 +41,7 @@
         SELECT count(*) from (
             SELECT *
             FROM TB_BOARD_POST PO
-                INNER JOIN TB_USER TU on PO.USER_NO = TU.USER_NO
+                LEFT JOIN TB_USER TU on PO.USER_NO = TU.USER_NO
             <where>
                 <!--            <if test="title != null">title like  ('%'||#{title}||'%')</if>-->
                 <!--            <if test="content != null">AND content like ('%'||#{content}||'%')</if>-->

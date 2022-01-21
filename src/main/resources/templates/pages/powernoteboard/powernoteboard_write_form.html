@@ -74,11 +74,12 @@
 
     function goPosting () {
         console.log("goPosting");
-        var PostDataVo = {
-            writer: $("input[name='board-email']").val(),
+        var PowerNotePostDataDto = {
+            postNo: -1,
             userNo: $("input[name='board-user-no']").val(),
             title: $("input[name='board-subject']").val(),
             content: $("textarea[name='board-contents']").val(),
+            categoryName: "기본"
         };
 
         $.ajax({
@@ -87,7 +88,7 @@
             },
             url: /*[[@{/api/powernoteboard/write}]]*/ '/api/powernoteboard/write',
             type: 'POST',
-            data: JSON.stringify(PostDataVo),
+            data: JSON.stringify(PowerNotePostDataDto),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             success: function onData (data) {

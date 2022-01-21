@@ -60,7 +60,7 @@
                                 <tbody>
                                 <tr id="idTableTr" th:each="item: ${pagesnav.getContent()}" th:object="${item}"  onclick="goView(this)">
                                     <td th:text="*{postNo}">No</td>
-                                    <td th:text="*{userName}">writer</td>
+                                    <td th:text="*{user.getUserName()}">writer</td>
                                     <td th:text="*{title}">title</td>
                                     <td th:text="*{content}">content</td>
                                     <td th:text="*{uptDate}">등록일</td>

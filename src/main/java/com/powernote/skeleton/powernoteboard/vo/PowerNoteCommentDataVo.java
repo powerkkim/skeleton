@@ -18,12 +18,10 @@ public class PowerNoteCommentDataVo {
     private Long commentGno = 0L;
     private Long commentGord = 0L;
     private Long commentDepth = 0L;
-    private Long parUserNo = 0L;
-    private String parUserWriter = "";
-    private Long userNo = 0L;
-    private String writer = "";
     private String content = "";
     private LocalDateTime regDate;
     private LocalDateTime uptDate;
 
+    private UserVo parUser;
+    private UserVo user;
 }

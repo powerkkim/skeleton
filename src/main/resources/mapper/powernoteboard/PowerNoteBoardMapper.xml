@@ -2,10 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
 
 <mapper namespace="com.powernote.skeleton.powernoteboard.mapper.PowernoteBoardMapper">
-    <insert id="save" parameterType="com.powernote.skeleton.powernoteboard.vo.PowerNotePostDataVo">
-        insert into TB_POWEWRNOTEBOARD_POST ( POST_NO, BOARD_NO, CATEGORY_NAME, TITLE ,  CONTENT , USER_NO, REG_DATE ,  UPT_DATE ) values (
+    <insert id="save" parameterType="com.powernote.skeleton.powernoteboard.dto.PowerNotePostDataDto">
+        insert into TB_POWEWRNOTEBOARD_POST ( POST_NO, CATEGORY_NAME, TITLE ,  CONTENT , USER_NO, REG_DATE ,  UPT_DATE ) values (
             TB_POWEWRNOTEBOARD_POST_SEQ.NEXTVAL,
-            #{boardNo},
             #{categoryName},
             #{title},
             #{content},
@@ -15,11 +14,28 @@
         )
     </insert>
 
-    <select id="findByWord" parameterType="HashMap" resultType="com.powernote.skeleton.powernoteboard.vo.PowerNotePostDataVo">
+    <resultMap id="powernotePostResult" type="com.powernote.skeleton.powernoteboard.vo.PowerNotePostDataVo">
+        <id property="postNo" column="POST_NO" />
+        <result property="title" column="TITLE"/>
+        <result property="content" column="CONTENT"/>
+        <result property="viewCnt" column="VIEW_CNT"/>
+        <result property="categoryName" column="CATEGORY_NAME"/>
+        <result property="uptDate" column="UPT_DATE"/>
+        <association property="user" javaType="com.powernote.skeleton.vo.UserVo">
+            <id property="userNo" column="USER_NO"/>
+            <result property="email" column="EMAIL"/>
+            <result property="userName" column="USER_NAME"/>
+            <result property="nickName" column="NICK_NAME"/>
+            <result property="profileImg" column="PROFILE_IMG"/>
+            <result property="roles" column="ROLES"/>
+        </association>
+    </resultMap>
+
+    <select id="findByWord" parameterType="HashMap" resultMap="powernotePostResult">
 <!--        oracle 12 이후 -->
         SELECT *
         FROM TB_POWEWRNOTEBOARD_POST PO
-        INNER JOIN TB_USER TU on PO.USER_NO = TU.USER_NO
+        LEFT JOIN TB_USER TU on PO.USER_NO = TU.USER_NO
         <where>
 <!--            <if test="title != null">title like  ('%'||#{title}||'%')</if>-->
             <if test="boardNo != null">AND BOARD_NO = #{boardNo}</if>
@@ -43,7 +59,7 @@
         SELECT count(*) from (
             SELECT *
             FROM TB_POWEWRNOTEBOARD_POST PO
-            INNER JOIN TB_USER TU on PO.USER_NO = TU.USER_NO
+            LEFT JOIN TB_USER TU on PO.USER_NO = TU.USER_NO
             <where>
                 <!--            <if test="title != null">title like  ('%'||#{title}||'%')</if>-->
                 <if test="boardNo != null">AND BOARD_NO = #{boardNo}</if>
@@ -53,14 +69,14 @@
         )
     </select>
 
-    <select id="findByPostId" parameterType="String" resultType="com.powernote.skeleton.powernoteboard.vo.PowerNotePostDataVo">
+    <select id="findByPostId" parameterType="String" resultMap="powernotePostResult">
         SELECT *
         FROM TB_POWEWRNOTEBOARD_POST PO
-        INNER JOIN TB_USER TU on PO.USER_NO = TU.USER_NO
+        LEFT JOIN TB_USER TU on PO.USER_NO = TU.USER_NO
         where POST_NO = #{postNo}
     </select>
 
-    <update id="update" parameterType="com.powernote.skeleton.powernoteboard.vo.PowerNotePostDataVo">
+    <update id="update" parameterType="com.powernote.skeleton.powernoteboard.dto.PowerNotePostDataDto">
         update TB_POWEWRNOTEBOARD_POST
         set TITLE = #{title},
             CONTENT = #{content},
@@ -74,7 +90,7 @@
         where POST_NO = #{postNo}
     </update>
 
-    <update id="delete" parameterType="com.powernote.skeleton.powernoteboard.vo.PowerNotePostDataVo">
+    <update id="delete" parameterType="com.powernote.skeleton.powernoteboard.dto.PowerNotePostDataDto">
         select * from TB_POWEWRNOTEBOARD_POST
     </update>
 </mapper>

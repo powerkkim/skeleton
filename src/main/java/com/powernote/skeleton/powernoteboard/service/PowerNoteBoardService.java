@@ -3,6 +3,7 @@ package com.powernote.skeleton.powernoteboard.service;
 import com.powernote.skeleton.dto.PageInfoDto;
 import com.powernote.skeleton.exception.basic.BaseException;
 import com.powernote.skeleton.exception.error.MessageType;
+import com.powernote.skeleton.powernoteboard.dto.PowerNotePostDataDto;
 import com.powernote.skeleton.powernoteboard.mapper.PowernoteBoardMapper;
 import com.powernote.skeleton.security.vo.CustomUserDetails;
 import com.powernote.skeleton.powernoteboard.vo.PowerNotePostDataVo;
@@ -32,7 +33,7 @@ public class PowerNoteBoardService {
     PowernoteBoardMapper boardMapper;
 
     @Transactional
-    public void write(PowerNotePostDataVo postDataVo) {
+    public void write(PowerNotePostDataDto postData ) {
         Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
 
         // 비로그인 접근
@@ -49,15 +50,15 @@ public class PowerNoteBoardService {
 
         log.info("username: "+ user.getUsername() );
         log.info("getNickname: "+ user.getNickname() );
-        log.info("postDataVo: "+ postDataVo.toString());
+        log.info("postDataVo: "+ postData.toString());
 
 //        postDataVo.
 
-        if ( user.getUserNo() != postDataVo.getUserNo() ) {
+        if ( user.getUserNo() != postData.getUserNo() ) {
             throw new BaseException("", MessageType.ERROR_LOGIN_001.toString(), HttpStatus.OK);
         }
 
-        boardMapper.save(postDataVo);
+        boardMapper.save(postData);
     }
 
     public Page<PowerNotePostDataVo> read(PageInfoDto rPageInfo ) {
@@ -102,7 +103,7 @@ public class PowerNoteBoardService {
     }
 
     @Transactional
-    public int update(PowerNotePostDataVo postDataVo) {
+    public int update(PowerNotePostDataDto postData) {
         Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
 
         // 비로그인 접근
@@ -119,20 +120,20 @@ public class PowerNoteBoardService {
 
         log.info("username: "+ user.getUsername() );
         log.info("getNickname: "+ user.getNickname() );
-        log.info("postDataVo: "+ postDataVo.toString());
+        log.info("postDataVo: "+ postData.toString());
 
-        if ( user.getUserNo() != postDataVo.getUserNo() ) {
+        if ( user.getUserNo() != postData.getUserNo() ) {
             throw new BaseException("", MessageType.ERROR_LOGIN_001.toString(), HttpStatus.OK);
         }
 
-        int bResult = boardMapper.update(postDataVo);
+        int bResult = boardMapper.update(postData);
 
         log.info("postDataVo: DB update" );
         return bResult;
     }
 
-    public void delete(PowerNotePostDataVo postDataVo) {
-        boardMapper.delete(postDataVo);
+    public void delete(PowerNotePostDataDto postData) {
+        boardMapper.delete(postData);
     }
 
     @Transactional
