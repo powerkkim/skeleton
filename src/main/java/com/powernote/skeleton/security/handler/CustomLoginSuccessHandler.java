@@ -56,7 +56,7 @@ public class CustomLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     private void resultRedirectStrategy(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
         HttpSession session = request.getSession();
-//        session.setMaxInactiveInterval(SESSION_TIME);
+        session.setMaxInactiveInterval(SESSION_TIME);
         log.info("resultRedirectStrategy Session Time {}", SESSION_TIME);
 
 //        CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
