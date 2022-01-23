@@ -33,8 +33,8 @@ public class CustomLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
     private String defaultUrl;
 
-    private static int SESSION_TIME = 10; // 30 Minutes
-//    private static int SESSION_TIME = 60 * 30; // 30 Minutes
+//    private static int SESSION_TIME = 30; // 30 Minutes
+    private static int SESSION_TIME = 60 * 30; // 30 Minutes
 
     public CustomLoginSuccessHandler(String defaultUrl) {
         super.setDefaultTargetUrl( defaultUrl );

@@ -36,10 +36,9 @@ public class CustomLoginFailureHandler extends SimpleUrlAuthenticationFailureHan
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
             throws IOException, ServletException {
 
-
         String errMsg= "";
         String username = request.getParameter("username");
-    	log.info("CustomLoginFailureHandler onAuthenticationFailure, role : {}, exception : {}, exception message : {}", request.getParameter("role"), request.getContextPath(), exception.toString(), exception.getMessage());
+    	log.info("CustomLoginFailureHandler onAuthenticationFailure username: {}, role : {}, exception : {}, exception message : {}",username, request.getParameter("role"), request.getContextPath(), exception.toString(), exception.getMessage());
 
         if ( exception instanceof BadCredentialsException) {
             errMsg = "error.BadCredentials";

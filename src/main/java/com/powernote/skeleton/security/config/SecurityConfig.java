@@ -9,6 +9,7 @@ import com.powernote.skeleton.security.service.UserDetailsServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -17,10 +18,17 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 import javax.sql.DataSource;
 
@@ -77,17 +85,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .csrf().disable()
             .authorizeRequests()  // 요청을 어떻게 보안을 걸것이냐에 대한 설정.
-                .antMatchers("/", "/main","/regist").permitAll()
+                .antMatchers("/", "/main","/regist", "/user/duplicated-login").permitAll()
                 .antMatchers("/hello").hasRole( UserRoleE.ROLE_USER.getRole() )
                 .antMatchers("/board/**").hasRole( UserRoleE.ROLE_USER.getRole() )
                 .antMatchers("/powernoteboard/**").hasRole( UserRoleE.ROLE_USER.getRole() )
-//                .anyRequest().authenticated() // 이외에는 인증이 필요하다.
+                .anyRequest().authenticated() // 이외에는 인증이 필요하다.
                 .and()
             .formLogin()          // 로그인 페이지 관련. 이항목이 없다면 403 페이지 오류가 발생.
                 .loginPage("/user/login").permitAll()  // 사용자 페이지 구성을 위해서는 해당 항목을 설정.
                 .loginProcessingUrl("/loginproc").permitAll()
                 .usernameParameter("userid")
-                .passwordParameter("password")
+                .passwordParameter("passwd")
                 .successHandler( new CustomLoginSuccessHandler("/main") )
                 .failureHandler( new CustomLoginFailureHandler("/user/login") )
                 .and()
@@ -104,8 +112,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMeCookieName("autologin")
                 .tokenValiditySeconds( 60*60*24 * 14 ) // 14일
                 .authenticationSuccessHandler( new CustomLoginSuccessHandler("/main") )
-                .tokenRepository(tokenRepository())
+                .tokenRepository(tokenRepository());
 
+            http.sessionManagement()
+//                .invalidSessionUrl("/user/duplicated-login")
+                .maximumSessions(1)
+                .maxSessionsPreventsLogin(true)
+                .expiredUrl("/user/duplicated-login")
         ;
 //                .and()
 //            .exceptionHandling()  // Exception Handle 의 경우  필요한경우에만 설정
@@ -118,11 +131,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PersistentTokenRepository tokenRepository() {
+    public PersistentTokenRepository tokenRepository( ) {
         JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
         jdbcTokenRepository.setDataSource(dataSource);
         return jdbcTokenRepository;
     }
-
 
 }

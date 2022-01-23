@@ -99,9 +99,10 @@ public class CustomUserDetails implements UserDetails, CredentialsContainer {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof User) {
+        if (obj instanceof CustomUserDetails) {
             return this.username.equals(((CustomUserDetails) obj).username);
         }
+
         return false;
     }
 

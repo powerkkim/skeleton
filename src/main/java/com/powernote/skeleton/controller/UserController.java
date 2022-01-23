@@ -28,4 +28,9 @@ public class UserController {
     public String userProfile() {
         return "pages/user_profile";
     }
+
+    @GetMapping("/duplicated-login")
+    public String duplicated() {
+        return "pages/duplicated-login";
+    }
 }

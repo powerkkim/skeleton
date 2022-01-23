@@ -37,9 +37,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         UserVo user = userMapper.findById(userId);
 
+
+
         CustomUserDetails userDetails = Optional.ofNullable(user)
                 .map((data)->{
                     log.info( "User 정보 :{}" , user.toString() );
+
+
 
                     CustomUserDetails detail = new CustomUserDetails(
                             user.getEmail(),
@@ -58,6 +62,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         return userDetails;
     }
+
 
     public static Collection<? extends GrantedAuthority> getAuthorities(String roles) {
         List<GrantedAuthority> authList = getGrantedAuthorities(getRoles(roles));
