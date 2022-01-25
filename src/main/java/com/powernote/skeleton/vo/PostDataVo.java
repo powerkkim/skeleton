@@ -12,10 +12,10 @@ import java.time.LocalDateTime;
 @ToString
 @NoArgsConstructor
 public class PostDataVo {
-    private Long postNo = 0L;
+    private long postNo = 0L;
 
     private String writer = "";
-    private Long userNo = 0L;
+    private long userNo = 0L;
 
     private String title = "";
     private String content = "";

@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 public class PostDataDto {
-    private Long postNo = 0L;
-    private Long userNo = 0L;
+    private long postNo = 0L;
+    private long userNo = 0L;
     private String title = "";
     private String content = "";
 }

@@ -33,19 +33,19 @@ public class PowerNoteBoardCommentService {
             throw new BaseException("", MessageType.ERROR_PAGE_403.toString(), HttpStatus.OK);
         }
 
-        CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
         log.info("authentication.getName(): "+ authentication.getName() );
 
-        log.info("getEmail: "+ user.getUsername() );
-        log.info("password: "+ user.getPassword() );
+        log.info("getEmail: "+ userDetails.getUser().getEmail() );
+        log.info("password: "+ userDetails.getUser().getPasswd() );
 
-        log.info("getUserNo: "+ user.getUserNo() );
-        log.info("username: "+ user.getName() );
-        log.info("getNickname: "+ user.getNickname() );
+        log.info("getUserNo: "+ userDetails.getUser().getUserNo() );
+        log.info("username: "+ userDetails.getUser().getUserName() );
+        log.info("getNickname: "+ userDetails.getUser().getNickName() );
         log.info("postDataVo: "+ commentData.toString());
 
-        if ( user.getUserNo() != commentData.getUserNo() ) {
+        if ( userDetails.getUser().getUserNo() != commentData.getUserNo() ) {
             throw new BaseException("", MessageType.ERROR_LOGIN_001.toString(), HttpStatus.OK);
         }
 

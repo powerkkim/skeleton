@@ -1,15 +1,19 @@
 package com.powernote.skeleton.security.vo;
 
+import com.powernote.skeleton.vo.UserVo;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.SpringSecurityCoreVersion;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
 import java.util.*;
@@ -17,45 +21,40 @@ import java.util.*;
 @ToString
 @Setter
 @Getter
-public class CustomUserDetails implements UserDetails, CredentialsContainer {
+public class CustomUserDetails implements UserDetails, OAuth2User, CredentialsContainer {
 
     private static final long serialVersionUID = 1000L;
 
-    private final String username;
-    private String password;
     private final Set<GrantedAuthority> authorities;
 
-    private final long userNo;
-    private String nickname;
-    private final String name;
+    private UserVo user; // User정보
 
-    private final boolean accountNonExpired;
-    private final boolean accountNonLocked;
-    private final boolean credentialsNonExpired;
-    private final boolean enabled;
+    private Map<String, Object> attributes;
 
-    public CustomUserDetails(
-                             String username,
-                             String password,
-                             String name,
-                             long userNo,
-                             String nickname,
-                             Collection<? extends GrantedAuthority> authorities,
-                             boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked
-                ) {
+    // 일반 로그인
+    public CustomUserDetails( UserVo user ) {
+        this.user = user;
 
-        this.username = username;
-        this.password = password;
-        this.name = name;
-        this.userNo = userNo;
-        this.nickname = nickname;
-        this.authorities = Collections.unmodifiableSet(sortAuthorities(authorities));
-
-        this.accountNonExpired = enabled;
-        this.accountNonLocked = accountNonExpired;
-        this.credentialsNonExpired = credentialsNonExpired;
-        this.enabled = accountNonLocked;
+        this.authorities = (StringUtils.hasText(user.getRoles()))
+                ? Collections.unmodifiableSet(new LinkedHashSet<>(this.sortAuthorities( Collections.singleton(new SimpleGrantedAuthority(user.getRoles())) )))
+                : Collections.unmodifiableSet(new LinkedHashSet<>(AuthorityUtils.NO_AUTHORITIES));
     }
+
+    // OAuth 로그인
+    public CustomUserDetails(UserVo user, Map<String, Object> attributes) {
+        this.user = user;
+        this.attributes = attributes;
+        this.authorities = (StringUtils.hasText(user.getRoles()))
+                ? Collections.unmodifiableSet(new LinkedHashSet<>(this.sortAuthorities( Collections.singleton(new SimpleGrantedAuthority(user.getRoles())) )))
+                : Collections.unmodifiableSet(new LinkedHashSet<>(AuthorityUtils.NO_AUTHORITIES));
+    }
+
+    // social login attribute [[
+    @Override
+    public Map<String, Object> getAttributes() {
+        return this.attributes;
+    }
+    // social login attribute ]]
 
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
@@ -63,44 +62,49 @@ public class CustomUserDetails implements UserDetails, CredentialsContainer {
     }
 
     @Override
-    public String getPassword() {
-        return this.password;
+    public String getName() {
+        return this.user.getEmail();
     }
 
     @Override
     public String getUsername() {
-        return this.username;
+        return this.user.getEmail();
+    }
+
+    @Override
+    public String getPassword() {
+        return this.user.getPasswd();
     }
 
     @Override
     public boolean isEnabled() {
-        return this.enabled;
+        return true;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return this.accountNonExpired;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return this.accountNonLocked;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return this.credentialsNonExpired;
+        return true;
     }
 
     @Override
     public void eraseCredentials() {
-        this.password = null;
+//        this.password = null;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof CustomUserDetails) {
-            return this.username.equals(((CustomUserDetails) obj).username);
+            return this.user.getEmail().equals(((CustomUserDetails) obj).user.getEmail());
         }
 
         return false;
@@ -108,52 +112,28 @@ public class CustomUserDetails implements UserDetails, CredentialsContainer {
 
     @Override
     public int hashCode() {
-        return this.username.hashCode();
+        return this.user.getEmail().hashCode();
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(getClass().getName()).append(" [");
-        sb.append("Username=").append(this.username).append(", ");
+        sb.append("Username=").append(this.user.getEmail()).append(", ");
         sb.append("Password=[PROTECTED], ");
-        sb.append("Enabled=").append(this.enabled).append(", ");
-        sb.append("AccountNonExpired=").append(this.accountNonExpired).append(", ");
-        sb.append("credentialsNonExpired=").append(this.credentialsNonExpired).append(", ");
-        sb.append("AccountNonLocked=").append(this.accountNonLocked).append(", ");
+//        sb.append("Enabled=").append(this.enabled).append(", ");
+//        sb.append("AccountNonExpired=").append(this.accountNonExpired).append(", ");
+//        sb.append("credentialsNonExpired=").append(this.credentialsNonExpired).append(", ");
+//        sb.append("AccountNonLocked=").append(this.accountNonLocked).append(", ");
         sb.append("Granted Authorities=").append(this.authorities).append("]");
         return sb.toString();
     }
 
-    private static SortedSet<GrantedAuthority> sortAuthorities(Collection<? extends GrantedAuthority> authorities) {
-        Assert.notNull(authorities, "Cannot pass a null GrantedAuthority collection");
-        // Ensure array iteration order is predictable (as per
-        // UserDetails.getAuthorities() contract and SEC-717)
-        SortedSet<GrantedAuthority> sortedAuthorities = new TreeSet<>(new AuthorityComparator());
-        for (GrantedAuthority grantedAuthority : authorities) {
-            Assert.notNull(grantedAuthority, "GrantedAuthority list cannot contain any null elements");
-            sortedAuthorities.add(grantedAuthority);
-        }
+    private Set<GrantedAuthority> sortAuthorities(Collection<? extends GrantedAuthority> authorities) {
+        SortedSet<GrantedAuthority> sortedAuthorities = new TreeSet<>( Comparator.comparing(GrantedAuthority::getAuthority) );
+        sortedAuthorities.addAll(authorities);
         return sortedAuthorities;
     }
-
-    private static class AuthorityComparator implements Comparator<GrantedAuthority>, Serializable {
-        private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
-        @Override
-        public int compare(GrantedAuthority g1, GrantedAuthority g2) {
-            // Neither should ever be null as each entry is checked before adding it to
-            // the set. If the authority is null, it is a custom authority and should
-            // precede others.
-            if (g2.getAuthority() == null) {
-                return -1;
-            }
-            if (g1.getAuthority() == null) {
-                return 1;
-            }
-            return g1.getAuthority().compareTo(g2.getAuthority());
-        }
-    }
-
 
 
 }

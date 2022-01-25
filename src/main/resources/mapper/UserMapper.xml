@@ -3,8 +3,12 @@
 
 <mapper namespace="com.powernote.skeleton.mapper.UserMapper">
     <insert id="insertUser" parameterType="com.powernote.skeleton.vo.UserVo">
+        <selectKey resultType="long" keyProperty="userNo" order="BEFORE">
+            SELECT TB_USER_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+
         insert into TB_USER ( USER_NO ,  EMAIL ,  PASSWD ,  USER_NAME,  NICK_NAME ,  TEL_NUMBER ,  ROLES ,  REG_DATE ,  UPT_DATE ,  PASSWDRESET_DATE ) values (
-            TB_USER_SEQ.NEXTVAL,
+            #{userNo},
             #{email},
             #{passwd},
             #{userName},
@@ -16,6 +20,11 @@
             SYSDATE
         )
     </insert>
+
+    <select id="findByUserNo" parameterType="long" resultType="com.powernote.skeleton.vo.UserVo">
+        select * from TB_USER
+        where USER_NO = #{userNo}
+    </select>
 
     <select id="findById" parameterType="String" resultType="com.powernote.skeleton.vo.UserVo">
         select * from TB_USER

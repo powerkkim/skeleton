@@ -48,12 +48,12 @@
       <br>
 
       <!--인증시 사용된 객체의 Username (ID)-->
-      <b>Authenticated username:</b>
+      <b>Authenticated name:</b>
       <div sec:authentication="name"></div>
       <br>
 
       <!--인증시 사용된 객체의 Username (ID)-->
-      <b>Authenticated email:</b>
+      <b>Authenticated principal.username email:</b>
       <div sec:authentication="principal.username"></div>
       <br>
 
@@ -61,20 +61,18 @@
       <b>Authenticated user role:</b>
       <div sec:authentication="principal.authorities"></div>
 
-
-
-      <b>Authenticated name:</b>
-      <div sec:authentication="principal.name"></div>
+      <b>Authenticated CustomUserDetails user.userName:</b>
+      <div sec:authentication="principal.user.userName"></div>
       <br>
 
       <!--인증시 사용된 객체의 Username (ID)-->
-      <b>Authenticated userNo:</b>
-      <div sec:authentication="principal.userNo"></div>
+      <b>Authenticated CustomUserDetails user.userNo:</b>
+      <div sec:authentication="principal.user.userNo"></div>
       <br>
 
       <!--인증시 사용된 객체의 Username (ID)-->
       <b>Authenticated nickname:</b>
-      <div sec:authentication="principal.nickname"></div>
+      <div sec:authentication="principal.user.userName"></div>
       <br>
 
       <b>Log out </b>

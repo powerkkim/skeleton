@@ -39,8 +39,8 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="ID-input-name">작성자</label>
-                                    <input type="name" name="board-email" class="form-control" id="ID-input-name" th:value="${#authentication.principal.username}" placeholder="Enter name" readonly>
-                                    <input type="hidden" name="board-user-no" class="form-control" id="ID-input-user-no" th:value="${#authentication.principal.userNo}" >
+                                    <input type="name" name="board-user-name" class="form-control" id="ID-input-name" th:value="${#authentication.principal.user.userName}" placeholder="Enter name" readonly>
+                                    <input type="hidden" name="board-user-no" class="form-control" id="ID-input-user-no" th:value="${#authentication.principal.user.userNo}" >
                                 </div>
                                 <div class="form-group">
                                     <label for="ID-input-subject">제목</label>

@@ -36,49 +36,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         log.info( "loadUserByUsername {}" , userId );
 
         UserVo user = userMapper.findById(userId);
-
-
-
-        CustomUserDetails userDetails = Optional.ofNullable(user)
+        CustomUserDetails userDetails = Optional.ofNullable( user )
                 .map((data)->{
                     log.info( "User 정보 :{}" , user.toString() );
-
-
-
-                    CustomUserDetails detail = new CustomUserDetails(
-                            user.getEmail(),
-                            user.getPasswd(),
-                            user.getUserName(),
-                            user.getUserNo(),
-                            user.getNickName(),
-                            getAuthorities(user.getRoles()),
-                            true,true,true,true );
+                    CustomUserDetails detail = new CustomUserDetails( user );
                     return detail;
                 })
-                .orElseGet(()-> {
-                    log.info("Login 정보 오류 ");
-                    throw new UsernameNotFoundException("UserNotFound");
-                });
+                .orElseThrow(() -> new UsernameNotFoundException("UserNotFound"));
 
         return userDetails;
     }
-
-
-    public static Collection<? extends GrantedAuthority> getAuthorities(String roles) {
-        List<GrantedAuthority> authList = getGrantedAuthorities(getRoles(roles));
-        return authList;
-    }
-
-    public static List<String> getRoles(String roles) {
-        return new ArrayList<String>(Arrays.asList(roles.split(",")));
-    }
-
-    public static List<GrantedAuthority> getGrantedAuthorities(List<String> roles) {
-        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        for (String role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role));
-        }
-        return authorities;
-    }
-
 }

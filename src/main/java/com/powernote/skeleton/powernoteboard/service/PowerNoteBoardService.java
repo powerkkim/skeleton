@@ -41,20 +41,20 @@ public class PowerNoteBoardService {
             throw new BaseException("", MessageType.ERROR_PAGE_403.toString(), HttpStatus.OK);
         }
 
-        CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
         log.info("authentication.getName(): "+ authentication.getName() );
-        log.info("getEmail: "+ user.getUsername() );
-        log.info("getUserNo: "+ user.getUserNo() );
-        log.info("password: "+ user.getPassword() );
+        log.info("getEmail: "+ userDetails.getUser().getEmail() );
+        log.info("getUserNo: "+ userDetails.getUser().getUserNo() );
+        log.info("password: "+ userDetails.getUser().getPasswd() );
 
-        log.info("username: "+ user.getName() );
-        log.info("getNickname: "+ user.getNickname() );
+        log.info("username: "+ userDetails.getUser().getUserName() );
+        log.info("getNickname: "+ userDetails.getUser().getNickName() );
         log.info("postDataVo: "+ postData.toString());
 
 //        postDataVo.
 
-        if ( user.getUserNo() != postData.getUserNo() ) {
+        if ( userDetails.getUser().getUserNo() != postData.getUserNo() ) {
             throw new BaseException("", MessageType.ERROR_LOGIN_001.toString(), HttpStatus.OK);
         }
 
@@ -111,18 +111,18 @@ public class PowerNoteBoardService {
             throw new BaseException("", MessageType.ERROR_PAGE_403.toString(), HttpStatus.OK);
         }
 
-        CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
         log.info("authentication.getName(): "+ authentication.getName() );
-        log.info("getEmail: "+ user.getUsername() );
-        log.info("getUserNo: "+ user.getUserNo() );
-        log.info("password: "+ user.getPassword() );
+        log.info("getEmail: "+ userDetails.getUser().getEmail() );
+        log.info("getUserNo: "+ userDetails.getUser().getUserNo() );
+        log.info("password: "+ userDetails.getUser().getPasswd() );
 
-        log.info("username: "+ user.getName());
-        log.info("getNickname: "+ user.getNickname() );
+        log.info("username: "+ userDetails.getUser().getUserName());
+        log.info("getNickname: "+ userDetails.getUser().getNickName() );
         log.info("postDataVo: "+ postData.toString());
 
-        if ( user.getUserNo() != postData.getUserNo() ) {
+        if ( userDetails.getUser().getUserNo() != postData.getUserNo() ) {
             throw new BaseException("", MessageType.ERROR_LOGIN_001.toString(), HttpStatus.OK);
         }
 

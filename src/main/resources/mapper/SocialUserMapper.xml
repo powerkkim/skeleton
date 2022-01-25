@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+
+<mapper namespace="com.powernote.skeleton.mapper.SocialUserMapper">
+    <insert id="insert" parameterType="com.powernote.skeleton.vo.SocialUserVo">
+        insert into TB_SOCIAL_CONNECT ( SOCIAL_NO, USER_NO, SOCIAL_TYPE,  OAUTH_ID,  EMAIL, USER_NAME,  NICK_NAME, PROFILE_IMG, TEL_NUMBER,  REG_DATE ,  UPT_DATE ) values (
+            TB_SOCIAL_CONNECT_SEQ.NEXTVAL,
+            #{userNo},
+            #{socialType},
+            #{oauthId},
+            #{email},
+            #{userName},
+            #{nickName},
+            #{profileImg},
+            #{telNumber},
+            SYSDATE,
+            SYSDATE
+        )
+    </insert>
+
+    <select id="findById" parameterType="String" resultType="com.powernote.skeleton.vo.SocialUserVo">
+        select * from TB_SOCIAL_CONNECT
+        where SOCIAL_TYPE = #{socialType}
+        AND OAUTH_ID = #{oauthId}
+    </select>
+
+    <update id="update" parameterType="com.powernote.skeleton.vo.SocialUserVo">
+        update TB_SOCIAL_CONNECT
+        set EMAIL = #{email},
+            USER_NAME = #{userName},
+            NICK_NAME = #{nickName},
+            PROFILE_IMG = #{profileImg},
+            TEL_NUMBER = #{telNumber},
+            UPT_DATE = SYSDATE
+        where SOCIAL_NO = #{socialNo}
+    </update>
+
+    <update id="updateUserNo" parameterType="String">
+        update TB_SOCIAL_CONNECT
+        set USER_NO = #{userNo}
+        where SOCIAL_TYPE = #{socialType}
+         AND OAUTH_ID = #{oauthId}
+    </update>
+</mapper>

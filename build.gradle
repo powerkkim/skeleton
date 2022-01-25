@@ -55,6 +55,10 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
+//  [[ OAUTH Client
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+//  ]] OAUTH Client
+
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

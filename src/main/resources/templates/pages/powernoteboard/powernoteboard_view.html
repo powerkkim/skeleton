@@ -118,11 +118,11 @@
                                             <input type="hidden" name="post-comment-depth" id="post-comment-depth" th:value="0" >
                                             <input type="hidden" name="post-comment-parUserNo" id="post-comment-parUserNo" th:value="${postData.getUser().getUserNo()}">
                                             <input type="hidden" name="post-comment-parUserWriter" id="post-comment-parUserWriter" th:value="${postData.getUser().getUserName()}" >
-                                            <input type="hidden" name="post-comment-userNo" id="post-comment-userNo" th:value="${#authentication.principal.userNo}" >
-                                            <input type="hidden" name="post-comment-userEmail" id="post-comment-userEmail" th:value="${#authentication.principal.username}" >
-                                            <input type="hidden" name="post-comment-username" id="post-comment-username" th:value="${#authentication.principal.name}" >
+                                            <input type="hidden" name="post-comment-userNo" id="post-comment-userNo" th:value="${#authentication.principal.user.userNo}" >
+                                            <input type="hidden" name="post-comment-userEmail" id="post-comment-userEmail" th:value="${#authentication.principal.user.email}" >
+                                            <input type="hidden" name="post-comment-username" id="post-comment-username" th:value="${#authentication.principal.user.userName}" >
 
-                                            <div class="pp-font-size13 pp-font-bold" th:text="${#authentication.principal.name}">작은하늘00</div>
+                                            <div class="pp-font-size13 pp-font-bold" th:text="${#authentication.principal.user.userName}">작은하늘00</div>
 
                                             <div class="pp-comment-write-textcnt text-right pp-font-size12" style="position: absolute; top: 2px; right: 8px;">100/3000</div>
                                         </div>

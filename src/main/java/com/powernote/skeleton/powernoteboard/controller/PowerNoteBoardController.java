@@ -58,13 +58,13 @@ public class PowerNoteBoardController {
         String cookie_read_count = StringUtils.hasLength((String) mapCookie.get("read_count")) ? (String) mapCookie.get("read_count") : "";
         // 저장될 새로운 쿠키값 생성
         String new_cookie_read_count = "|" + postNo;
-        StringUtils.hasLength(null);
 
         // 저장된 쿠키에 새로운 쿠키값이 존재하는 지 검사
         if ( StringUtils.countOccurrencesOf(cookie_read_count, new_cookie_read_count) <= 0 ) {
             // 없을 경우 쿠키 생성
             Cookie cookie = new Cookie("read_count", cookie_read_count + new_cookie_read_count);
             cookie.setMaxAge(86400); // 초단위  하루 60초*60분*24시 = 86400
+            cookie.setHttpOnly(true);
             response.addCookie(cookie);
 
             int nUpCnt = boardService.updateViewCnt(postNo);

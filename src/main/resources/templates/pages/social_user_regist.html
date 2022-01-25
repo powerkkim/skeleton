@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout_login}"
+>
+
+<body>
+<div class="login-box" layout:fragment="content">
+  <div class="login-logo">
+     <b>Skeleton</b>
+  </div>
+  <!-- /.login-logo -->
+  <div class="card">
+    <input type="hidden" name="socialType" th:value="${socialUser.getSocialType()}">
+    <input type="hidden" name="oauthId" th:value="${socialUser.getOauthId()}">
+    <input type="hidden" name="nickName" th:value="${socialUser.getNickName()}">
+    <input type="hidden" name="profileImg" th:value="${socialUser.getProfileImg()}">
+    <input type="hidden" name="telNumber" th:value="${socialUser.getTelNumber()}">
+
+    <div class="card-body login-card-body">
+      <p class="login-box-msg font-weight-bold">[[${socialUser.getSocialType()}]] 연동 가입 </p>
+      <form id="registForm" method="post" >
+        <div class="input-group mb-3">
+          <input type="email" name="email" class="form-control" placeholder="Email" th:value="${socialUser.getEmail()}" readonly>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-envelope" ></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input type="password" name="passwd" class="form-control" placeholder="Password">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input type="password" class="form-control" placeholder="Retype password">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input type="text" name="userName" class="form-control" placeholder="name"  th:value="${socialUser.getUserName()}">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user"></span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-8">
+            <div class="icheck-primary">
+              <input type="checkbox" id="agreeTerms" name="terms" value="agree">
+              <label for="agreeTerms">
+                I agree to the <a href="#">terms</a>
+              </label>
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-4">
+            <button type="button" onclick="signUp()" class="btn btn-primary btn-block">가입 완료</button>
+          </div>
+          <!-- /.col -->
+        </div>
+      </form>
+
+<!--      <div class="social-auth-links text-center">-->
+<!--        <p>- OR -</p>-->
+<!--        <a href="#" class="btn btn-block btn-primary">-->
+<!--          <i class="fab fa-facebook mr-2"></i>-->
+<!--          Sign up using Facebook-->
+<!--        </a>-->
+<!--        <a href="#" class="btn btn-block btn-danger">-->
+<!--          <i class="fab fa-google-plus mr-2"></i>-->
+<!--          Sign up using Google+-->
+<!--        </a>-->
+<!--      </div>-->
+<!--      &lt;!&ndash; /.social-auth-links &ndash;&gt;-->
+
+      <a href="login.html" th:href="@{/user/login}" class="text-center">I already have a membership</a>
+    </div>
+    <!-- /.login-card-body -->
+  </div>
+</div>
+<!-- /.login-box -->
+
+<th:block layout:fragment="localjs">
+<!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>-->
+<!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>-->
+<!--    <script src="/js/main.js"></script>-->
+</th:block>
+
+<script layout:fragment="jsscript" th:inline="javascript">
+  $(document).ready(function(){
+    console.log("page loaded");
+  });
+
+  function signUp () {
+        var SocialRegistDto = {
+          socialNo: '-1',
+          socialType:$("input[name='socialType']").val(),
+          oauthId: $("input[name='oauthId']").val(),
+          email: $("input[name='email']").val(),
+          userName: $("input[name='userName']").val(),
+          nickName: $("input[name='nickName']").val(),
+          profileImg: $("input[name='profileImg']").val(),
+          telNumber: $("input[name='telNumber']").val(),
+          passwd: $("input[name='passwd']").val(),
+        };
+
+        $.ajax({
+          url: /*[[@{/api/user_post_socialregist}]]*/ '/api/user_post_socialregist',
+          type: "POST",
+          data: SocialRegistDto,
+          success: function onData (data) {
+            console.log(data);
+            alert("가입저장 성공 하였습니다.");
+
+            window.location = /*[[@{/main}]]*/ '/main';
+          },
+          error: function onError (error) {
+            console.error(error.responseJSON);
+          }
+        })
+  }
+
+
+</script>
+
+</body>
+</html>

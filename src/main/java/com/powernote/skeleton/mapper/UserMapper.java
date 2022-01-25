@@ -13,5 +13,7 @@ public interface UserMapper {
 
     UserVo findById(String Id);
 
-}
 
+    UserVo findByUserNo(long userNo);
+
+}

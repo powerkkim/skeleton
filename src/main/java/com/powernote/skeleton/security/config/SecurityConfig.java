@@ -5,6 +5,7 @@ import com.powernote.skeleton.security.handler.CustomAccessDeniedHandler;
 import com.powernote.skeleton.security.handler.CustomAuthenticationEntryPoint;
 import com.powernote.skeleton.security.handler.CustomLoginFailureHandler;
 import com.powernote.skeleton.security.handler.CustomLoginSuccessHandler;
+import com.powernote.skeleton.security.service.OAuthService;
 import com.powernote.skeleton.security.service.UserDetailsServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Qualifier("myDataSource")
     DataSource dataSource;
 
+    @Autowired
+    OAuthService oAuthService;
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -85,7 +89,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .csrf().disable()
             .authorizeRequests()  // 요청을 어떻게 보안을 걸것이냐에 대한 설정.
-                .antMatchers("/", "/main","/regist", "/user/duplicated-login").permitAll()
+                .antMatchers("/", "/main","/regist", "/user/duplicated-login", "/user/social_preregist", "/user/social_user_regist").permitAll()
+                .antMatchers("/api/user_post_regist", "/api/user_post_socialregist").permitAll()
                 .antMatchers("/hello").hasRole( UserRoleE.ROLE_USER.getRole() )
                 .antMatchers("/board/**").hasRole( UserRoleE.ROLE_USER.getRole() )
                 .antMatchers("/powernoteboard/**").hasRole( UserRoleE.ROLE_USER.getRole() )
@@ -103,6 +108,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/user/logout").permitAll()
                 .logoutSuccessUrl("/main").permitAll()   // logout 이 되고 나서 가는 페이지 설정.
                 .invalidateHttpSession(true)  // session 정보를 지우고 무효화.
+                .clearAuthentication(true)
                 .deleteCookies("JSESSIONID", "autologin")
                 .and()
             .rememberMe()
@@ -112,13 +118,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMeCookieName("autologin")
                 .tokenValiditySeconds( 60*60*24 * 14 ) // 14일
                 .authenticationSuccessHandler( new CustomLoginSuccessHandler("/main") )
-                .tokenRepository(tokenRepository());
+                .tokenRepository(tokenRepository())
+            ;
 
-            http.sessionManagement()
+        http.oauth2Login() // OAuth2 로그인 설정 시작점
+                .userInfoEndpoint() // OAuth2 로그인 성공 이후 사용자 정보를 가져올 때 설정 담당
+                .userService(oAuthService) // OAuth2 로그인 성공 시, 후작업을 진행할 UserService 인터페이스 구현체 등록
+                .and()
+                .successHandler( new CustomLoginSuccessHandler("/main") )
+                .failureHandler( new CustomLoginFailureHandler("/user/login") )
+
+        ;
+
+        http.sessionManagement()
 //                .invalidSessionUrl("/user/duplicated-login")
                 .maximumSessions(1)
                 .maxSessionsPreventsLogin(true)
                 .expiredUrl("/user/duplicated-login")
+//                .sessionRegistry(sessionRegistry())
         ;
 //                .and()
 //            .exceptionHandling()  // Exception Handle 의 경우  필요한경우에만 설정
@@ -136,5 +153,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         jdbcTokenRepository.setDataSource(dataSource);
         return jdbcTokenRepository;
     }
+
+//    @Bean
+//    public SessionRegistry sessionRegistry() {
+//        return new SessionRegistryImpl();
+//    }
+
+    @Bean
+    public ServletListenerRegistrationBean<HttpSessionEventPublisher> httpSessionEventPublisher() {
+        return new ServletListenerRegistrationBean<HttpSessionEventPublisher>(new HttpSessionEventPublisher());
+    }
+
 
 }

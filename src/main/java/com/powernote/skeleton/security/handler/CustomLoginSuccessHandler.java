@@ -2,15 +2,11 @@ package com.powernote.skeleton.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.powernote.skeleton.dto.ResponseDto;
-import com.powernote.skeleton.exception.basic.BaseException;
 import com.powernote.skeleton.exception.error.MessageType;
-import com.powernote.skeleton.security.vo.CustomUserDetails;
 import com.powernote.skeleton.util.MessageUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -24,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Map;
 
 @Slf4j
 public class CustomLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
@@ -59,6 +56,13 @@ public class CustomLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         HttpSession session = request.getSession();
         session.setMaxInactiveInterval(SESSION_TIME);
         log.info("resultRedirectStrategy Session Time {}", SESSION_TIME);
+
+        if( authentication.getPrincipal() instanceof DefaultOAuth2User ){
+            Map<String, Object> attributes = ((DefaultOAuth2User) authentication.getPrincipal()).getAttributes();
+
+
+//            UserProfile userProfile = OAuthAttributes.extract(registrationId, attributes);
+        }
 
 //        CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
 //
