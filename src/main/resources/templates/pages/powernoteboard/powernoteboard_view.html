@@ -91,6 +91,7 @@
                                             <input type="hidden" name="item-comment-parUserWriter" th:value="*{parUser.getUserName()}" >
                                             <input type="hidden" name="item-comment-userNo" th:value="*{user.getUserNo()}" >
                                             <input type="hidden" name="item-comment-userEmail" th:value="*{user.getEmail()}" >
+                                            <input type="hidden" name="item-comment-userName" th:value="*{user.getUserName()}" >
 
                                             <img class="img-circle img-bordered-sm" th:src="*{user.getProfileImg()}" alt="user image">
                                             <span class="username">
@@ -208,10 +209,12 @@
         if ( commentDepth > 2 ) commentDepth = 2;
         let parUserNo = $(findCurli).find("input[name='item-comment-userNo']").val();
         let parUserWriter = $(findCurli).find("input[name='item-comment-userEmail']").val();
+        let parUserName = $(findCurli).find("input[name='item-comment-userName']").val();
 
         let userNo = $('#post-comment-userNo').val();
         let userEmail = $('#post-comment-userEmail').val();
         let username = $('#post-comment-username').val();
+        let placeholder = parUserName.length > 0 ? parUserName +"님에게 댓글을 남겨보세요" : "댓글을 남겨보세요"
 
         let html =`<li class="pp-li-comment pp-li-comment-reply" id="reply-edit-area">
                     <div class="pp-comment-write-area">
@@ -230,7 +233,7 @@
                                 <div class="pp-comment-write-textcnt text-right pp-font-size12" style="position: absolute; top: 2px; right: 8px;">100/3000
                                 </div>
                             </div>
-                            <textarea class="pp-textarea-autosize" name="post-comment-content" placeholder="댓글을 남겨보세요" rows="1" style="height: 33px; "></textarea>
+                            <textarea class="pp-textarea-autosize" name="post-comment-content" placeholder="${placeholder}" rows="1" style="height: 33px; "></textarea>
                         </div>
                         <div class="pp-comment-attach-tool">
                             <div>
@@ -370,44 +373,19 @@
         let findCurli = $("input[name='item-comment-gno']:input[value='" +commentData.commentGno + "']").last().closest('.pp-li-comment');
 
         console.log(findCurli);
-        let html = `<li class="pp-li-comment pp-li-comment-reply">
-            <div class="user-block">
-            <input type="hidden" name="item-comment-no" value="${ commentData.commentNo }">
-            <input type="hidden" name="item-comment-gno" value="${ commentData.commentGno}">
-            <input type="hidden" name="item-comment-gord" value="${ commentData.commentGord}">
-            <input type="hidden" name="item-comment-depth" value="${ commentData.commentDepth}">
-            <input type="hidden" name="item-comment-parUserNo" value="${ commentData.parUser.userNo}">
-            <input type="hidden" name="item-comment-parUserWriter" value="${ commentData.parUser.userName}">
-            <input type="hidden" name="item-comment-userNo" value="${ commentData.user.userNo}">
-            <input type="hidden" name="item-comment-userEmail" value="${ commentData.user.email}">
-            <img class="img-circle img-bordered-sm" src="/images/profile_default.png" alt="user image">
-            <span class="username">
-                <a href="#" > ${ commentData.user.userName }</a>
-                <a href="#" class="float-right btn-tool"><i
-                    class="fas fa-ellipsis-v"></i></a>
-            </span>
-
-            <span class="pp-comment-content">
-                ${ (commentData.parUser != '' && commentData.commentDepth >=2) ?
-                    '<span class="mr-3">' + commentData.parUser.userName + '</span>'
-                :
-                    ''
-                }
-                <span>${ commentData.content}</span>
-            </span>
-            <span class="description  mt-2">
-                 <span >${ commentData.uptDate}</span>
-                 <a href="javascript:void(0);" onclick="goCommentReplyEdit(this)"><span> 답글쓰기</span></a>
-            </div>
-        </li>`;
-
+        let html = fnReplyEditAreaCreateHtml( 'pp-li-comment-reply', commentData);
         $(findCurli).after(html);
     }
 
     function funAddComment( commentData ) {
         console.log( commentData);
+        let html = fnReplyEditAreaCreateHtml( '', commentData);
+        $("ul.pp-ul-comment").append(html);
+    }
 
-        let html = `<li class="pp-li-comment">
+    function fnReplyEditAreaCreateHtml( replyclass , commentData ) {
+
+        return `<li class="pp-li-comment ${replyclass}">
             <div class="user-block">
             <input type="hidden" name="item-comment-no" value="${ commentData.commentNo }">
             <input type="hidden" name="item-comment-gno" value="${ commentData.commentGno}">
@@ -417,6 +395,7 @@
             <input type="hidden" name="item-comment-parUserWriter" value="${ commentData.parUser.userName}">
             <input type="hidden" name="item-comment-userNo" value="${ commentData.user.userNo}">
             <input type="hidden" name="item-comment-userEmail" value="${ commentData.user.email}">
+            <input type="hidden" name="item-comment-userName" value="${ commentData.user.userName }" >
             <img class="img-circle img-bordered-sm" src="/images/profile_default.png" alt="user image">
             <span class="username">
                 <a href="#" > ${ commentData.user.userName }</a>
@@ -437,11 +416,6 @@
                  <a href="javascript:void(0);" onclick="goCommentReplyEdit(this)"><span> 답글쓰기</span></a>
             </div>
         </li>`;
-
-        // $("ul.pp-ul-comment").prepend('<li><a href="/user/messages"><span class="tab">Message Center</span></a></li>');
-
-
-        $("ul.pp-ul-comment").append(html);
     }
 </script>
 
